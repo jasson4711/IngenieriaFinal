@@ -205,7 +205,7 @@ public class Clientes extends javax.swing.JDialog {
 
         jLabel3.setText("Nombre:");
 
-        jLabel4.setText("Dirección:");
+        jLabel4.setText("Ciudad:");
 
         jLabel5.setText("Teléfono:");
 
@@ -496,7 +496,7 @@ public class Clientes extends javax.swing.JDialog {
 
     public void cargarDatosClientes(String Dato) {
 
-        String[] titulos = {"CEDULA", "APELLIDO", "NOMBRE", "DIRECCION", "TELEFONO", "E-MAIL"};
+        String[] titulos = {"CEDULA", "APELLIDO", "NOMBRE", "CIUDAD", "TELEFONO", "E-MAIL"};
         String[] registros = new String[6];
         jTable_DatosClientes.getTableHeader().setReorderingAllowed(false);
         jTable_DatosClientes.getTableHeader().setResizingAllowed(false);

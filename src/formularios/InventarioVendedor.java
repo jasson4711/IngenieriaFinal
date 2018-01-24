@@ -99,6 +99,7 @@ public class InventarioVendedor extends javax.swing.JDialog {
                 + "where p.TIP_PRO LIKE '" + Dato + "%' "
                 + "and p.id_col_per=c.id_col "
                 + "and p.id_tal_per=t.id_tal "
+                + "and p.estado=1 "
                 + "order by p.TIP_PRO";
         //sql = "select * from productos where TIP_PRO LIKE '" + Dato + "%' order by TIP_PRO";
         try {

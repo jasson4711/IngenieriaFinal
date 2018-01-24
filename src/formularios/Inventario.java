@@ -148,7 +148,7 @@ public class Inventario extends javax.swing.JDialog {
                 + "where p.tip_pro LIKE '" + Dato + "%' "
                 + "and p.id_col_per = c.id_col "
                 + "and p.id_tal_per = t.id_tal "
-                + "and p.estado = " + 1 + " "
+                + "and p.estado = 1 "
                 + "order by p.tip_pro ";
         try {
             Statement st = cn.createStatement();

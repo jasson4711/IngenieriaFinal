@@ -59,7 +59,7 @@ public class Proveedores extends javax.swing.JDialog {
 
     public void cargarDatosProveedor(String Dato) {
 
-        String[] titulos = {"CÓDIGO", "NOMBRE", "DIRECCION", "TELEFONO"};
+        String[] titulos = {"CÓDIGO", "NOMBRE", "CIUDAD", "TELEFONO"};
         String[] registros = new String[4];
         jTable_Proveedores.getTableHeader().setReorderingAllowed(false);
         jTable_Proveedores.getTableHeader().setResizingAllowed(false);
@@ -355,6 +355,7 @@ public class Proveedores extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jTextField_Bus_Pro = new javax.swing.JTextField();
         jTextField_Dir_Pro = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton_Nuevo = new javax.swing.JButton();
         jButton_Guardar = new javax.swing.JButton();
@@ -364,6 +365,7 @@ public class Proveedores extends javax.swing.JDialog {
         jButton_Volver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
         jTable_Proveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -384,7 +386,7 @@ public class Proveedores extends javax.swing.JDialog {
 
         jLabel2.setText("Nombre:");
 
-        jLabel3.setText("Dirección");
+        jLabel3.setText("Ciudad:");
 
         jLabel4.setText("Teléfono:");
 
@@ -405,6 +407,13 @@ public class Proveedores extends javax.swing.JDialog {
             }
         });
 
+        jButton1.setText("Hacer pedido");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -420,12 +429,14 @@ public class Proveedores extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField_Cod_Pro, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField_Tel_Pro, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField_Tel_Pro, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextField_Cod_Pro, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1))
                             .addComponent(jTextField_Dir_Pro, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField_Nom_Prov, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
                             .addComponent(jTextField_Bus_Pro, javax.swing.GroupLayout.Alignment.LEADING))
@@ -434,10 +445,11 @@ public class Proveedores extends javax.swing.JDialog {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(38, 38, 38)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField_Cod_Pro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField_Cod_Pro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -625,6 +637,15 @@ public class Proveedores extends javax.swing.JDialog {
         ValidarIngresoBusqueda(evt, jTextField_Bus_Pro);
     }//GEN-LAST:event_jTextField_Bus_ProKeyReleased
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (jTable_Proveedores.getSelectedRow()>-1) {
+            new Pedidos(null,true,jTextField_Cod_Pro.getText()).setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null,"Seleccione un proveedor");
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -677,6 +698,7 @@ public class Proveedores extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_Actualizar;
     private javax.swing.JButton jButton_Borrar;
     private javax.swing.JButton jButton_Cancelar;

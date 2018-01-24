@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.LimitExceededException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -37,7 +38,7 @@ public class Venta extends javax.swing.JDialog {
     TableColumnModel modeloColumna;
     JScrollPane scroll;
     boolean ventExit = true;
-    
+
     public Venta(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -49,14 +50,16 @@ public class Venta extends javax.swing.JDialog {
         establecerTamañoColumnas();
         jButton_Cancelar.setEnabled(true);
         habilitarComponentesParaFactura(false);
+        habilitarEdicionCamposCliente(false);
+        jTextField_CedCli.setEditable(true);
     }
-    
+
     public void establecerFecha() {
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
         Calendar fecha = Calendar.getInstance();
         jLabel_Fecha.setText(formateador.format(fecha.getTime()));
     }
-    
+
     public void establecerUsuario() {
         String sql = "select * from usuarios where cod_usu='" + FramePrincipal.cedUsuario + "'";
 //        String sql = "select * from usuarios where cod_usu='1101715876'";
@@ -79,7 +82,7 @@ public class Venta extends javax.swing.JDialog {
         } catch (Exception ex) {
         }
     }
-    
+
     public void habilitarEdicionCamposCliente(boolean habilitado) {
         jTextField_NomCli.setEditable(habilitado);
         jTextField_CedCli.setEditable(habilitado);
@@ -88,7 +91,7 @@ public class Venta extends javax.swing.JDialog {
         jTextField_TelCli.setEditable(habilitado);
         jTextField_DirCli.setEditable(habilitado);
     }
-    
+
     public void txtLimpiar() {
         jTextField_CedCli.setText("");
         jTextField_NomCli.setText("");
@@ -99,12 +102,12 @@ public class Venta extends javax.swing.JDialog {
         jButton_Cargar.setEnabled(true);
         jButton_Seleccionar.setEnabled(false);
     }
-    
+
     public void cargarCliente() {
         if (jTextField_CedCli.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese Cédula");
             jTextField_CedCli.requestFocus();
-            
+
         } else if (!Metodos.verificadorCédula(jTextField_CedCli.getText())) {
             JOptionPane.showMessageDialog(null, "Cédula Errónea");
             jTextField_CedCli.setText("");
@@ -127,10 +130,9 @@ public class Venta extends javax.swing.JDialog {
                     clienteExiste = true;
                     habilitarEdicionCamposCliente(false);
                     jButton_Seleccionar.setEnabled(true);
-                    jToggleButton_ConsumidorFinal.setEnabled(false);
                 }
                 cn.close();
-                
+
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error al obtener datos de la base:\n" + ex);
                 try {
@@ -148,26 +150,25 @@ public class Venta extends javax.swing.JDialog {
                     jButton_Guardar.setEnabled(true);
                 }
             } else {
-                ventExit = false;
             }
         }
     }
-    
+
     public void modeloTablaCarrito() {
         String[] titulos = {"CÓDIGO", "NOMBRE", "TALLA", "CANTIDAD", "V/U", "V/T"};
         jTable_CarritoCompra.getTableHeader().setReorderingAllowed(false);
         jTable_CarritoCompra.getTableHeader().setResizingAllowed(false);
         modeloTabla = new DefaultTableModel(null, titulos) {
-            
+
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
         jTable_CarritoCompra.setModel(modeloTabla);
-        
+
     }
-    
+
     public void establecerTamañoColumnas() {
         modeloColumna = jTable_CarritoCompra.getColumnModel();
         modeloColumna.getColumn(0).setPreferredWidth(60);
@@ -177,9 +178,9 @@ public class Venta extends javax.swing.JDialog {
         modeloColumna.getColumn(4).setPreferredWidth(60);
         modeloColumna.getColumn(5).setPreferredWidth(60);
         jTable_CarritoCompra.setColumnModel(modeloColumna);
-        
+
     }
-    
+
     public void crearCabeceraFactura() {
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         Calendar fecha = Calendar.getInstance();
@@ -200,9 +201,9 @@ public class Venta extends javax.swing.JDialog {
                 psd.setString(2, CED_CLI_VEN);
                 psd.setString(3, COD_USU_VEN);
                 psd.setFloat(4, TOT_VEN);
-                
+
                 int affectedRows = psd.executeUpdate();
-                
+
                 try (ResultSet generatedKeys = psd.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         affectedRows = generatedKeys.getInt(1);
@@ -223,7 +224,7 @@ public class Venta extends javax.swing.JDialog {
             }
         }
     }
-    
+
     public void guardarCliente() {
         if (jTextField_CedCli.getText().isEmpty() || !Metodos.verificadorCédula(jTextField_CedCli.getText())) {
             JOptionPane.showMessageDialog(null, "Cédula Errónea");
@@ -258,7 +259,7 @@ public class Venta extends javax.swing.JDialog {
                 psd.setString(5, TEL_CLI);
                 psd.setString(6, EMAIL_CLI);
                 int n = psd.executeUpdate();
-                
+
                 if (n > 0) {
                     JOptionPane.showMessageDialog(null, "Se insertó la información correctamente");
                     cargarCliente();
@@ -269,7 +270,7 @@ public class Venta extends javax.swing.JDialog {
                 } else {
                     cn.close();
                 }
-                
+
             } catch (SQLException ex) { //permite manejar la excepcion de la base de datos
                 JOptionPane.showMessageDialog(null, "Datos duplicados");
                 try {
@@ -281,7 +282,7 @@ public class Venta extends javax.swing.JDialog {
             }
         }
     }
-    
+
     public ArrayList<Producto> obtenerProductos() {
         Producto p;
         ArrayList<Producto> productos = new ArrayList();
@@ -291,14 +292,16 @@ public class Venta extends javax.swing.JDialog {
         }
         return productos;
     }
-    
+
     public void eliminarProducto() {
         int fila = jTable_CarritoCompra.getSelectedRow();
         double valorTProd = 0;
+
         try {
             if (!jTextField_NumElim.getText().isEmpty()) {
                 int cantidad = Integer.valueOf(jTable_CarritoCompra.getValueAt(fila, 3).toString());
                 int numEle = Integer.valueOf(jTextField_NumElim.getText());
+
                 int nueCan = 0;
                 if (numEle > cantidad) {
                     JOptionPane.showMessageDialog(null, "No se pueden eliminar más elementos de los existentes");
@@ -329,9 +332,9 @@ public class Venta extends javax.swing.JDialog {
         } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "No se ha seleccionado una fila");
         }
-        
+
     }
-    
+
     public void agregarArticulo() {
         String codigo;
         int cantidad = 0;
@@ -371,6 +374,7 @@ public class Venta extends javax.swing.JDialog {
                         registros[5] = String.valueOf(Integer.valueOf(registros[3]) * Double.valueOf(registros[4]));
                     }
                     modeloTabla.addRow(registros);
+                    ventExit = false;
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Ocurrió un error al obtener datos de la base:\n" + ex);
                     try {
@@ -390,7 +394,7 @@ public class Venta extends javax.swing.JDialog {
             calcularValorFactura();
         }
     }
-    
+
     public void calcularValorFactura() {
         float subtotal = 0;
         float temporal;
@@ -399,7 +403,7 @@ public class Venta extends javax.swing.JDialog {
         float descuento = Float.valueOf(jSpinner_Descuento.getValue().toString());
         float valorDescuento;
         float total;
-        
+
         if (jTable_CarritoCompra.getRowCount() <= 0) {
             subtotal = 0;
         } else {
@@ -420,7 +424,7 @@ public class Venta extends javax.swing.JDialog {
         jTextField_Descuento.setText(valorDescuento + "");
         jTextField_Total.setText(total + "");
     }
-    
+
     public void facturar() {
         crearCabeceraFactura();
         cn = cc.conectar();
@@ -445,7 +449,7 @@ public class Venta extends javax.swing.JDialog {
                 psd.setFloat(4, PRE_TOT_P);
                 n += psd.executeUpdate();
                 psdUpd.executeUpdate();
-                
+
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Ha ocurrido un error en el envío de datos a la base\n" + ex);
                 try {
@@ -471,16 +475,16 @@ public class Venta extends javax.swing.JDialog {
         } catch (SQLException ex1) {
             JOptionPane.showMessageDialog(null, "Error de conexión");
         }
-        
+
     }
-    
+
     public void reporte(int numFac) {
         cn = cc.conectar();
         Map parametros = new HashedMap();
         parametros.put("numFac", numFac);
         JasperReport reporte;
         try {
-            reporte = (JasperReport)JRLoader.loadObject(getClass().getResource("/Reportes/rptFacturaVenta.jasper"));
+            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptFacturaVenta.jasper"));
             JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
             //JasperViewer.viewReport(imprimir, false);
             JDialog frame = new JDialog(this);
@@ -496,9 +500,8 @@ public class Venta extends javax.swing.JDialog {
         } catch (JRException ex) {
             JOptionPane.showMessageDialog(null, "Error al generar el reporte\n" + ex);
         } catch (Exception ex) {
-            
         }
-        
+
     }
 //
 //    public void actualizarSto(String id, Integer n) {
@@ -540,16 +543,16 @@ public class Venta extends javax.swing.JDialog {
         jTextField_Total.setEnabled(tutia);
         jSpinner_Descuento.setEnabled(tutia);
     }
-    
+
     public void vaciarCarrito() {
-        
+
         for (int i = 0; i < jTable_CarritoCompra.getRowCount(); i++) {
             modeloTabla.removeRow(i);
             i -= 1;
         }
-        
+
     }
-    
+
     public void valoresIniciales() {
         jToggleButton_ConsumidorFinal.setSelected(false);
         jToggleButton_ConsumidorFinal.setEnabled(true);
@@ -592,6 +595,7 @@ public class Venta extends javax.swing.JDialog {
         jButton_Cargar = new javax.swing.JButton();
         jButton_Guardar = new javax.swing.JButton();
         jToggleButton_ConsumidorFinal = new javax.swing.JToggleButton();
+        jButton_Limpiar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jButton_Eliminar = new javax.swing.JButton();
@@ -674,7 +678,7 @@ public class Venta extends javax.swing.JDialog {
             }
         });
 
-        jLabel5.setText("Dirección:");
+        jLabel5.setText("Ciudad:");
 
         jTextField_DirCli.setEditable(false);
         jTextField_DirCli.setNextFocusableComponent(jButton_Guardar);
@@ -708,6 +712,13 @@ public class Venta extends javax.swing.JDialog {
             }
         });
 
+        jButton_Limpiar.setText("Limpiar");
+        jButton_Limpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_LimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -723,15 +734,6 @@ public class Venta extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField_CedCli, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton_Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField_TelCli, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField_ApeCli)
                                     .addComponent(jTextField_NomCli, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -742,16 +744,28 @@ public class Venta extends javax.swing.JDialog {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(jButton_Guardar, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                                         .addGap(115, 115, 115))
-                                    .addComponent(jTextField_DirCli)))))
+                                    .addComponent(jTextField_DirCli)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextField_CedCli, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton_Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField_TelCli, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jToggleButton_ConsumidorFinal)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton_Limpiar)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jToggleButton_ConsumidorFinal)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jToggleButton_ConsumidorFinal)
+                    .addComponent(jButton_Limpiar))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -1076,52 +1090,59 @@ public class Venta extends javax.swing.JDialog {
 //        deshabilitarCancelar();
         Metodos.validarTelefono(evt, jTextField_CedCli);
     }//GEN-LAST:event_jTextField_CedCliKeyTyped
-    
+
     private void jTextField_NomCliKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NomCliKeyTyped
         // TODO add your handling code here:
         Metodos.validarLetras(evt, jTextField_NomCli);
     }//GEN-LAST:event_jTextField_NomCliKeyTyped
-    
+
     private void jTextField_ApeCliKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_ApeCliKeyTyped
         // TODO add your handling code here:
         Metodos.validarLetras(evt, jTextField_ApeCli);
     }//GEN-LAST:event_jTextField_ApeCliKeyTyped
-    
+
     private void jTextField_TelCliKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_TelCliKeyTyped
         // TODO add your handling code here:
         Metodos.validarTelefono(evt, jTextField_TelCli);
     }//GEN-LAST:event_jTextField_TelCliKeyTyped
-    
+
     private void jTextField_DirCliKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_DirCliKeyTyped
         // TODO add your handling code here:
         if (jTextField_DirCli.getText().length() >= 15) {
             evt.consume();
         }
     }//GEN-LAST:event_jTextField_DirCliKeyTyped
-    
+
     private void jButton_CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CargarActionPerformed
         cargarCliente();
     }//GEN-LAST:event_jButton_CargarActionPerformed
-    
+
     private void jButton_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_EliminarActionPerformed
 //        eliminarDeCarritoDeCompra();
         eliminarProducto();
         if (jTable_CarritoCompra.getRowCount() <= 0) {
+
+            ventExit = true;
+
             jButton_Eliminar.setEnabled(false);
             jTextField_NumElim.setEnabled(false);
             jButtonFacturar.setEnabled(false);
         }
         calcularValorFactura();
     }//GEN-LAST:event_jButton_EliminarActionPerformed
-    
+
     private void jButtonFacturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFacturarActionPerformed
-        int preg = JOptionPane.showConfirmDialog(this, "Realizar Venta?...", "Facturando...", JOptionPane.YES_OPTION);
-        if (preg == 0) {
-            facturar();
+        if (jTextField_NomCli.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese cliente");
+        } else {
+            int preg = JOptionPane.showConfirmDialog(this, "Realizar Venta?...", "Facturando...", JOptionPane.YES_OPTION);
+            if (preg == 0) {
+                facturar();
+            }
         }
-        
+
     }//GEN-LAST:event_jButtonFacturarActionPerformed
-    
+
     private void jButton_CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CancelarActionPerformed
 //        confirmarCancelarVenta();
         if (ventExit) {
@@ -1132,43 +1153,53 @@ public class Venta extends javax.swing.JDialog {
                 this.dispose();
             }
         }
-        
+
     }//GEN-LAST:event_jButton_CancelarActionPerformed
-    
+
     private void jButton_GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GuardarActionPerformed
         // TODO add your handling code here:
         guardarCliente();
     }//GEN-LAST:event_jButton_GuardarActionPerformed
-    
+
     private void jToggleButton_ConsumidorFinalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton_ConsumidorFinalActionPerformed
         consumidorFinal();
     }//GEN-LAST:event_jToggleButton_ConsumidorFinalActionPerformed
-    
+
     private void consumidorFinal() {
         // TODO add your handling code here:
         if (jToggleButton_ConsumidorFinal.isSelected()) {
             jTextField_CedCli.setText("1111111116");
             cargarCliente();
+            jToggleButton_ConsumidorFinal.setEnabled(false);
         } else {
             txtLimpiar();
             jButton_Guardar.setEnabled(false);
         }
     }
-    
+
     private void jButton_SeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SeleccionarActionPerformed
         // TODO add your handling code here:
         agregarArticulo();
     }//GEN-LAST:event_jButton_SeleccionarActionPerformed
-    
+
     private void jTextField_NumElimKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NumElimKeyTyped
         // TODO add your handling code here:
         Metodos.validarCamposSoloNumeros(evt, jTextField_NumElim, 2);
     }//GEN-LAST:event_jTextField_NumElimKeyTyped
-    
+
     private void jSpinner_DescuentoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner_DescuentoStateChanged
         // TODO add your handling code here:
         calcularValorFactura();
     }//GEN-LAST:event_jSpinner_DescuentoStateChanged
+
+    private void jButton_LimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LimpiarActionPerformed
+        // TODO add your handling code here:
+        txtLimpiar();
+        habilitarEdicionCamposCliente(false);
+        jTextField_CedCli.setEditable(true);
+        jToggleButton_ConsumidorFinal.setEnabled(true);
+        jToggleButton_ConsumidorFinal.setSelected(false);
+    }//GEN-LAST:event_jButton_LimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1205,11 +1236,11 @@ public class Venta extends javax.swing.JDialog {
          * Create and display the dialog
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
+
             public void run() {
                 Venta dialog = new Venta(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    
+
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
@@ -1225,6 +1256,7 @@ public class Venta extends javax.swing.JDialog {
     private javax.swing.JButton jButton_Cargar;
     private javax.swing.JButton jButton_Eliminar;
     private javax.swing.JButton jButton_Guardar;
+    private javax.swing.JButton jButton_Limpiar;
     private javax.swing.JButton jButton_Seleccionar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

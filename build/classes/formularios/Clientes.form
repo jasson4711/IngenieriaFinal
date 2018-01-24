@@ -161,7 +161,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Direcci&#xf3;n:"/>
+            <Property name="text" type="java.lang.String" value="Ciudad:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">

@@ -32,6 +32,7 @@ public class InventarioProveedor extends javax.swing.JDialog {
     boolean vale = false;
     int cantidadRestante;
     ArrayList<Producto> productos;
+    String codPro="";
 
     /**
      * Creates new form Clientes
@@ -39,21 +40,22 @@ public class InventarioProveedor extends javax.swing.JDialog {
     public InventarioProveedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setearCodigo(jTable_Inventario, jLabel_Codigo);
         setLocationRelativeTo(parent);
         cargarDatosProductos("");
+        setearCodigo(jTable_Inventario, jLabel_Codigo);
         jLabel_Codigo.setVisible(false);
         jTextField_Cant.setVisible(false);
         jButton_Añadir.setVisible(false);
         jLabel_Cant.setVisible(false);
     }
 
-    public InventarioProveedor(java.awt.Frame parent, boolean modal, ArrayList<Producto> listaProd) {
+    public InventarioProveedor(java.awt.Frame parent, boolean modal, ArrayList<Producto> listaProd,String codProd) {
         super(parent, modal);
         initComponents();
-        setearCodigo(jTable_Inventario, jLabel_Codigo);
         setLocationRelativeTo(parent);
+        codPro = codProd;
         cargarDatosProductos("");
+        setearCodigo(jTable_Inventario, jLabel_Codigo);
         jLabel_Codigo.setVisible(false);
         productos = listaProd;
         jTextField_Cant.requestFocus();
@@ -73,12 +75,13 @@ public class InventarioProveedor extends javax.swing.JDialog {
         modeloColumna.getColumn(4).setPreferredWidth(50);
         modeloColumna.getColumn(5).setPreferredWidth(60);
         modeloColumna.getColumn(6).setPreferredWidth(55);
+        modeloColumna.getColumn(6).setPreferredWidth(80);
         modeloColumna.getColumn(7).setPreferredWidth(140);
     }
 
     public void cargarDatosProductos(String Dato) {
 
-        String[] titulos = {"CÓDIGO", "NOMBRE", "MARCA", "TALLA", "COLOR", "STOCK", "DESCRIPCIÓN"};
+        String[] titulos = {"CÓDIGO", "NOMBRE", "MARCA", "TALLA", "COLOR", "STOCK", "PROVEEDOR", "DESCRIPCIÓN"};
         String[] registros = new String[8];
         jTable_Inventario.getTableHeader().setReorderingAllowed(false);
         jTable_Inventario.getTableHeader().setResizingAllowed(false);
@@ -90,15 +93,18 @@ public class InventarioProveedor extends javax.swing.JDialog {
                 return false;
             }
         };
-
+        System.out.println(codPro);
         ConexionTienda cc = new ConexionTienda();
         Connection cn = cc.conectar();
         String sql = "";
-        sql = "select p.id_pro,p.tip_pro,p.mar_pro,t.des_tal,c.nom_col,p.sto_pro,p.des_pro "
-                + "from productos p, colores c, tallas t "
+        sql = "select p.id_pro,p.tip_pro,p.mar_pro,t.des_tal,c.nom_col,p.sto_pro, pro.nom_pro,p.des_pro "
+                + "from productos p, colores c, tallas t, proveedores pro "
                 + "where p.TIP_PRO LIKE '" + Dato + "%' "
                 + "and p.id_col_per=c.id_col "
                 + "and p.id_tal_per=t.id_tal "
+                + "and p.cod_pro_per=pro.cod_pro "
+                + "and p.estado=1 "
+                + "and pro.cod_pro='"+codPro+"' "
                 + "order by p.TIP_PRO";
         //sql = "select * from productos where TIP_PRO LIKE '" + Dato + "%' order by TIP_PRO";
         try {
@@ -112,6 +118,7 @@ public class InventarioProveedor extends javax.swing.JDialog {
                 registros[4] = rs.getString(5);
                 registros[5] = rs.getString(6);
                 registros[6] = rs.getString(7);
+                registros[7] = rs.getString(8);
                 modeloTabla.addRow(registros);
             }
             jTable_Inventario.setModel(modeloTabla);
@@ -140,6 +147,7 @@ public class InventarioProveedor extends javax.swing.JDialog {
     public int obtenerCantidad() {
         return Integer.valueOf(jTextField_Cant.getText());
     }
+
     public String enviarCodigo() {
         return jLabel_Codigo.getText();
     }
@@ -226,7 +234,7 @@ public class InventarioProveedor extends javax.swing.JDialog {
                         .addComponent(jButton_Volver)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel_Codigo))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -258,8 +266,8 @@ public class InventarioProveedor extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
