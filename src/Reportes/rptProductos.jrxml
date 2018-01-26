@@ -55,7 +55,7 @@ ORDER BY productos.`TIP_PRO`]]>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Reporte general productos]]></text>
+				<text><![CDATA[Reporte general de productos]]></text>
 			</staticText>
 		</band>
 	</title>

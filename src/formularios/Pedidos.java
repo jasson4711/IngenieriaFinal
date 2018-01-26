@@ -99,53 +99,57 @@ public class Pedidos extends javax.swing.JDialog {
         InventarioProveedor sel = new InventarioProveedor(null, true, obtenerProductos(), jTextField_Cod_Prov.getText().trim());
         sel.setVisible(true);
         boolean existe = false;
-        if (!sel.isShowing()) {
+        if (!sel.isShowing() && sel.vale) {
             codigo = sel.enviarCodigo();
             cantidad = sel.obtenerCantidad();
-            int numFilas = jTable_CarritoCompra.getRowCount();
-            for (int i = 0; i < numFilas; i++) {
-                if (codigo.equals(jTable_CarritoCompra.getValueAt(i, 0).toString())) {
-                    cantidad += Integer.valueOf(jTable_CarritoCompra.getValueAt(i, 3).toString());
-                    jTable_CarritoCompra.setValueAt(cantidad, i, 3);
-                    existe = true;
-                }
-            }
-            if (!existe) {
-                String[] registros = new String[4];
-                cn = cc.conectar();
-                String sql = "SELECT p.id_pro, p.tip_pro, t.des_tal "
-                        + "FROM productos p, tallas t "
-                        + "WHERE p.id_tal_per= t.id_tal "
-                        + "AND p.id_pro = '" + codigo + "' ";
-                try {
-                    Statement st = cn.createStatement();
-                    ResultSet rs = st.executeQuery(sql);
-                    while (rs.next()) {
-                        registros[0] = rs.getString(1);
-                        registros[1] = rs.getString(2);
-                        registros[2] = rs.getString(3);
-                        registros[3] = String.valueOf(cantidad);
+            if (!codigo.isEmpty()) {
+                int numFilas = jTable_CarritoCompra.getRowCount();
+                for (int i = 0; i < numFilas; i++) {
+                    if (codigo.equals(jTable_CarritoCompra.getValueAt(i, 0).toString())) {
+                        cantidad += Integer.valueOf(jTable_CarritoCompra.getValueAt(i, 3).toString());
+                        jTable_CarritoCompra.setValueAt(cantidad, i, 3);
+                        existe = true;
                     }
-                    modeloTabla.addRow(registros);
-                    existeProd = true;
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Ocurrió un error al obtener datos de la base:\n" + ex);
+                }
+                if (!existe) {
+                    String[] registros = new String[4];
+                    cn = cc.conectar();
+                    String sql = "SELECT p.id_pro, p.tip_pro, t.des_tal, c.nom_col "
+                            + "FROM productos p, tallas t,colores c "
+                            + "WHERE p.id_tal_per= t.id_tal "
+                            + "AND p.id_col_per=c.id_col "
+                            + "AND p.id_pro = '" + codigo + "' ";
                     try {
-                        cn.close();
-                    } catch (SQLException ex1) {
-                        JOptionPane.showMessageDialog(null, "Error de conexión");
+                        Statement st = cn.createStatement();
+                        ResultSet rs = st.executeQuery(sql);
+                        while (rs.next()) {
+                            registros[0] = rs.getString(1);
+                            registros[1] = rs.getString(2)+" "+rs.getString(4);
+                            registros[2] = rs.getString(3);
+                            registros[3] = String.valueOf(cantidad);
+                        }
+                        modeloTabla.addRow(registros);
+                        existeProd = true;
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Ocurrió un error al obtener datos de la base:\n" + ex);
+                        try {
+                            cn.close();
+                        } catch (SQLException ex1) {
+                            JOptionPane.showMessageDialog(null, "Error de conexión");
+                        }
+                    } catch (Exception ex) {
                     }
-                } catch (Exception ex) {
+                }
+                if (jTable_CarritoCompra.getRowCount() > 0) {
+                    jButton_Eliminar.setEnabled(true);
+                    jTextField_NumElim.setEnabled(true);
+                    jButtonFacturar.setEnabled(true);
                 }
             }
-            if (jTable_CarritoCompra.getRowCount() > 0) {
-                jButton_Eliminar.setEnabled(true);
-                jTextField_NumElim.setEnabled(true);
-                jButtonFacturar.setEnabled(true);
-            }
+
         }
     }
-    
+
     public void establecerUsuario() {
         String sql = "select * from usuarios where cod_usu='" + FramePrincipal.cedUsuario + "'";
 //        String sql = "select * from usuarios where cod_usu='1101715876'";
@@ -168,7 +172,6 @@ public class Pedidos extends javax.swing.JDialog {
         } catch (Exception ex) {
         }
     }
-
 
     public void cargarCliente() {
         if (jTextField_Cod_Prov.getText().isEmpty()) {
@@ -277,7 +280,7 @@ public class Pedidos extends javax.swing.JDialog {
         }
         if (n == i) {
             //JOptionPane.showMessageDialog(null, "Venta exitosa!");
-            
+
             vaciarCarrito();
             valoresIniciales();
             existeProd = false;
@@ -311,7 +314,8 @@ public class Pedidos extends javax.swing.JDialog {
         jTextField_Tel_Prov.setText("");
         jTextField_NumElim.setEnabled(false);
         jButtonFacturar.setEnabled(false);
-        jButton_Eliminar.setEnabled(false);}
+        jButton_Eliminar.setEnabled(false);
+    }
 
     public void crearCabecera() {
         String sql = "insert into pedidos_cab (fec_ped,cod_pro_pid,ced_usu_pid,confirmado) values (?,?,?,'N')";
@@ -341,7 +345,7 @@ public class Pedidos extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Error realizando el pedido \n" + ex);
         }
     }
-    
+
     public void reporte(int numFac) {
         cn = cc.conectar();
         Map parametros = new HashedMap();

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptProdMasVendido" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8c4932f1-5e7e-4c30-becd-27c3b1860230">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="192"/>
+	<queryString>
+		<![CDATA[select sum(d.cantidad), c.fec_ven, CONCAT(CONCAT(CONCAT(CONCAT(p.tip_pro,' '),p.mar_pro),' '),col.nom_col) producto
+from ventas_cab c, detalle_ventas d, productos p, colores col
+where c.num_ven=d.num_ven_p
+and d.id_pro_v = p.id_pro
+and col.id_col = p.id_col_per
+group by producto
+order by c.fec_ven asc]]>
+	</queryString>
+	<field name="sum(d.cantidad)" class="java.math.BigDecimal"/>
+	<field name="fec_ven" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="producto" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="99" splitType="Stretch">
+			<staticText>
+				<reportElement x="63" y="50" width="424" height="35" uuid="1562cb02-df8e-470d-a58c-9826ac9565da"/>
+				<textElement textAlignment="Center">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de productos vendidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="103" y="0" width="347" height="45" forecolor="#CCCCFF" backcolor="#000000" uuid="726852c4-d186-4e34-a28c-fa44d571f0ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOÑA ROSITA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-2" y="45" width="555" height="1" uuid="c33d0e62-319b-4655-a284-e788983258ed"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="-2" y="88" width="555" height="1" uuid="b89cc670-2b3a-457f-bf5b-9cc128389fc7"/>
+			</line>
+			<image hAlign="Center" isUsingCache="false">
+				<reportElement x="0" y="0" width="50" height="45" uuid="557259b3-f2b3-48a6-ae33-f3bd9670fb85"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<summary>
+		<band height="518" splitType="Stretch">
+			<barChart>
+				<chart>
+					<reportElement x="0" y="299" width="553" height="201" uuid="2f3a9a20-77b0-474d-9fb4-0409aef6ff22"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{sum(d.cantidad)}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{producto}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{sum(d.cantidad)}]]></valueExpression>
+						<labelExpression><![CDATA[$F{producto}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<pieChart>
+				<chart>
+					<reportElement x="0" y="0" width="553" height="299" uuid="5be9ba27-3ddc-4eb5-ae25-ea9dd75c38bf"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{sum(d.cantidad)}]]></keyExpression>
+					<valueExpression><![CDATA[$F{sum(d.cantidad)}]]></valueExpression>
+					<labelExpression><![CDATA[$F{producto}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>

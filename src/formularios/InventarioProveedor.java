@@ -318,6 +318,7 @@ public class InventarioProveedor extends javax.swing.JDialog {
         } else if (jTextField_Cant.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese la cantidad");
         } else {
+            vale = true;
             this.dispose();
         }
    }//GEN-LAST:event_jButton_AñadirActionPerformed
