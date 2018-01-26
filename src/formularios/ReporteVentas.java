@@ -34,11 +34,12 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
      * Creates new form ReporteVentas
      */
     public static String x;
-
+    
     public ReporteVentas() {
         initComponents();
+        setTitle("Reporte Ventas");
         x = "x";
-
+        
     }
 
     /**
@@ -69,7 +70,7 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
                 try {
-
+                    
                     frame.setMaximum(true);
                 } catch (Exception e) {
                 }
@@ -88,12 +89,12 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
                 try {
-
+                    
                     frame.setMaximum(true);
                 } catch (Exception e) {
                 }
                 frame.setVisible(true);
-
+                
             }
             if (jComboBox_Ventas.getSelectedItem().equals("CÉDULA")) {
                 if (Metodos.verificadorCédula(jTextField_Reportes.getText())) {
@@ -104,8 +105,8 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Cédula incorrecta");
                 }
-
-
+                
+                
             }
             if (jComboBox_Ventas.getSelectedItem().equals("MARCA")) {
                 parametros.put("marca", jTextField_Reportes.getText());
@@ -143,12 +144,12 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
         } catch (JRException ex) {
         }
     }
-
+    
     public static void main(String args[]) {
-
-
+        
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
-
+            
             public void run() {
                 new ReporteVentas().setVisible(true);
             }
@@ -231,7 +232,7 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         imprimirReporte();
     }//GEN-LAST:event_btn_Generar_ReporteActionPerformed
-
+    
     private void jComboBox_VentasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_VentasItemStateChanged
         // TODO add your handling code here:
         if (jComboBox_Ventas.getSelectedItem().equals("GENERAL")) {
@@ -240,7 +241,7 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
             jTextField_Reportes.setEnabled(true);
         }
     }//GEN-LAST:event_jComboBox_VentasItemStateChanged
-
+    
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
         x = null;
