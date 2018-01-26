@@ -4,6 +4,8 @@
  */
 package formularios;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author PC
@@ -101,17 +103,26 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
+        String z = ReporteProductos.x;
+        String x = ReporteVentas.x;
+        if (x == null && z == null) {
+            ReporteVentas ventas = new ReporteVentas();
+            jDesktopPane1.add(ventas);
+            ventas.show();
+        }
 
-        ReporteVentas ventas = new ReporteVentas();
-        jDesktopPane1.add(ventas);
-        ventas.show();// TODO add your handling code here:
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         // TODO add your handling code here:
-        ReporteProductos productos = new ReporteProductos();
-        jDesktopPane1.add(productos);
-        productos.show();
+        String z = ReporteVentas.x;
+        String x = ReporteProductos.x;
+        if (x == null && z == null) {
+            ReporteProductos productos = new ReporteProductos();
+            jDesktopPane1.add(productos);
+            productos.show();
+        }
+
     }//GEN-LAST:event_jMenu1MouseClicked
 
     private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed

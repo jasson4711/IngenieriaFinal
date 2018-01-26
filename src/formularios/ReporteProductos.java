@@ -23,8 +23,12 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
     /**
      * Creates new form ReporteProductos
      */
+    public static String x;
+    
     public ReporteProductos() {
         initComponents();
+        setTitle("Reporte Productos");
+        x = "x";
     }
 
     /**
@@ -43,6 +47,23 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jLabel1.setText("Buscar por: ");
 
@@ -84,7 +105,7 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
                     .addComponent(jComboBox_Productos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField_Reportes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_Generar_Reporte))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
@@ -98,11 +119,16 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
             jTextField_Reportes.setEnabled(true);
         }
     }//GEN-LAST:event_jComboBox_ProductosItemStateChanged
-
+    
     private void btn_Generar_ReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Generar_ReporteActionPerformed
         // TODO add your handling code here:
         imprimirReporte();
     }//GEN-LAST:event_btn_Generar_ReporteActionPerformed
+    
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        x = null;
+    }//GEN-LAST:event_formInternalFrameClosing
     public void imprimirReporte() throws HeadlessException {
         // TODO add your handling code here:
         try {
@@ -113,7 +139,7 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
             if (jComboBox_Productos.getSelectedItem().equals("GENERAL")) {
                 //parametros.put("placa", txtReportes.getText());
                 // JasperReport reporte = (JasperReport) JRLoader.loadObject("src\\Reportes\\rptProductos.jrxml");
-                JasperReport reporte = (JasperReport)JRLoader.loadObject(getClass().getResource("/Reportes/rptProductos.jasper"));
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptProductos.jasper"));
                 JasperPrint imprimir = JasperFillManager.fillReport(reporte, null, cn);
                 // JasperViewer.viewReport(imprimir);
                 JInternalFrame frame = new JInternalFrame("Reporte");
@@ -125,14 +151,14 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
                 try {
-
+                    
                     frame.setMaximum(true);
                 } catch (Exception e) {
                 }
                 frame.setVisible(true);
             } else if (jComboBox_Productos.getSelectedItem().equals("CÓDIGO")) {
                 parametros.put("codigo", jTextField_Reportes.getText());
-                JasperReport reporte = (JasperReport)JRLoader.loadObject(getClass().getResource("/Reportes/rptProductosCodigo.jasper"));
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptProductosCodigo.jasper"));
                 JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
                 JInternalFrame frame = new JInternalFrame("Reporte");
                 frame.getContentPane().add(new JRViewer(imprimir));
@@ -143,16 +169,16 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
                 try {
-
+                    
                     frame.setMaximum(true);
                 } catch (Exception e) {
                 }
                 frame.setVisible(true);
-
+                
             }
             if (jComboBox_Productos.getSelectedItem().equals("NOMBRE")) {
                 parametros.put("nombre", jTextField_Reportes.getText());
-                JasperReport reporte = (JasperReport)JRLoader.loadObject(getClass().getResource("/Reportes/rptProductoNombre.jasper"));
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptProductoNombre.jasper"));
                 JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
                 JInternalFrame frame = new JInternalFrame("Reporte");
                 frame.getContentPane().add(new JRViewer(imprimir));
@@ -163,7 +189,7 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
                 try {
-
+                    
                     frame.setMaximum(true);
                 } catch (Exception e) {
                 }
@@ -171,7 +197,7 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
             }
             if (jComboBox_Productos.getSelectedItem().equals("MARCA")) {
                 parametros.put("marca", jTextField_Reportes.getText());
-                JasperReport reporte = (JasperReport)JRLoader.loadObject(getClass().getResource("/Reportes/rptProductosMarca.jasper"));
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptProductosMarca.jasper"));
                 JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
                 JInternalFrame frame = new JInternalFrame("Reporte");
                 frame.getContentPane().add(new JRViewer(imprimir));
@@ -182,13 +208,13 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
                 try {
-
+                    
                     frame.setMaximum(true);
                 } catch (Exception e) {
                 }
                 frame.setVisible(true);
             }
-
+            
             if (jComboBox_Productos.getSelectedItem().equals("SELECCIONE")) {
                 JOptionPane.showMessageDialog(null, "SELECCIONE OPCION");
             }
@@ -233,7 +259,7 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
          * Create and display the form
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
-
+            
             public void run() {
                 new ReporteProductos().setVisible(true);
             }

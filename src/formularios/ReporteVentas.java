@@ -33,8 +33,11 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
     /**
      * Creates new form ReporteVentas
      */
+    public static String x;
+
     public ReporteVentas() {
         initComponents();
+        x = "x";
 
     }
 
@@ -98,7 +101,7 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                     if (fac.clienteExiste) {
                         fac.setVisible(true);
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Cédula incorrecta");
                 }
 
@@ -160,6 +163,23 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
         btn_Generar_Reporte = new javax.swing.JButton();
 
         setClosable(true);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jLabel1.setText("Buscar por: ");
 
@@ -201,7 +221,7 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                     .addComponent(jComboBox_Ventas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField_Reportes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_Generar_Reporte))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,6 +240,11 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
             jTextField_Reportes.setEnabled(true);
         }
     }//GEN-LAST:event_jComboBox_VentasItemStateChanged
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        x = null;
+    }//GEN-LAST:event_formInternalFrameClosing
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Generar_Reporte;
     private javax.swing.JComboBox jComboBox_Ventas;
