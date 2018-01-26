@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptProdMasVendido" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8c4932f1-5e7e-4c30-becd-27c3b1860230">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptProdMasVendido" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8c4932f1-5e7e-4c30-becd-27c3b1860230">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="192"/>
+	<property name="ireport.y" value="696"/>
 	<queryString>
 		<![CDATA[select sum(d.cantidad), c.fec_ven, CONCAT(CONCAT(CONCAT(CONCAT(p.tip_pro,' '),p.mar_pro),' '),col.nom_col) producto
 from ventas_cab c, detalle_ventas d, productos p, colores col
@@ -17,9 +17,6 @@ order by c.fec_ven asc]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="producto" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="99" splitType="Stretch">
 			<staticText>
@@ -95,4 +92,23 @@ order by c.fec_ven asc]]>
 			</pieChart>
 		</band>
 	</summary>
+	<noData>
+		<band height="471">
+			<staticText>
+				<reportElement x="58" y="7" width="456" height="103" uuid="ce0d605a-cf7c-4409-9454-da2def6a4153"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO EXISTEN DATOS PARA EL REPORTE INGRESADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="247" y="56" width="100" height="20" uuid="257f6f8a-0795-484d-bd42-1f988620a9e7"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<image>
+				<reportElement x="-2" y="94" width="554" height="351" uuid="2aa492ae-d212-4094-9e57-b62fc0422fe9"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\no_datos.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</noData>
 </jasperReport>

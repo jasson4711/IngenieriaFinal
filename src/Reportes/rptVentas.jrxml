@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptVentas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86efe9d0-61c8-4088-8219-ba5614595d68">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptVentas" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86efe9d0-61c8-4088-8219-ba5614595d68">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="18"/>
+	<property name="ireport.y" value="462"/>
 	<queryString>
 		<![CDATA[select sum(tot_ven), fec_ven
 from ventas_cab
@@ -13,9 +13,6 @@ order by fec_ven]]>
 	<field name="fec_ven" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="104" splitType="Stretch">
 			<line>
@@ -73,4 +70,23 @@ order by fec_ven]]>
 			</barChart>
 		</band>
 	</summary>
+	<noData>
+		<band height="444">
+			<staticText>
+				<reportElement x="62" y="6" width="456" height="103" uuid="99a42d1e-f665-415a-aaaf-5d34e9dab62b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO EXISTEN DATOS PARA EL REPORTE INGRESADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="55" width="100" height="20" uuid="2e44d3ec-9aed-46f2-b2ce-9526bbb704de"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<image>
+				<reportElement x="2" y="93" width="554" height="351" uuid="8b98f405-7b91-4dde-992e-eae4a360e59e"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\no_datos.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</noData>
 </jasperReport>
