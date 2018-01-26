@@ -29,6 +29,7 @@ public class ReporteProductos extends javax.swing.JInternalFrame {
         initComponents();
         setTitle("Reporte Productos");
         x = "x";
+        jTextField_Reportes.setEnabled(false);
     }
 
     /**

@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * @author PC
  */
 public class Menu extends javax.swing.JFrame {
-    
+
     public InputStream foto = this.getClass().getResourceAsStream("/imagenes/LogoR.png");
 
     /**
@@ -26,7 +26,7 @@ public class Menu extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         cargarImagen(jDesktopPane1, foto);
     }
-    
+
     public void cargarImagen(javax.swing.JDesktopPane jDeskp, InputStream fileImagen) {
         try {
             BufferedImage image = ImageIO.read(fileImagen);
@@ -111,11 +111,11 @@ public class Menu extends javax.swing.JFrame {
     private void EstablecerValoresPorDefecto() {
         this.setSize(722, 653);
     }
-    
+
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu2ActionPerformed
-    
+
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
         //String z = ReporteProductos.x;
@@ -125,9 +125,9 @@ public class Menu extends javax.swing.JFrame {
             jDesktopPane1.add(ventas);
             ventas.show();
         }
-        
+
     }//GEN-LAST:event_jMenu2MouseClicked
-    
+
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         // TODO add your handling code here:
         //String z = ReporteVentas.x;
@@ -137,13 +137,13 @@ public class Menu extends javax.swing.JFrame {
             jDesktopPane1.add(productos);
             productos.show();
         }
-        
+
     }//GEN-LAST:event_jMenu1MouseClicked
-    
+
     private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu4ActionPerformed
-    
+
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
         this.dispose();
@@ -184,7 +184,7 @@ public class Menu extends javax.swing.JFrame {
          * Create and display the form
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
+
             public void run() {
                 new Menu().setVisible(true);
             }

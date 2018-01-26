@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -34,12 +35,15 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
      * Creates new form ReporteVentas
      */
     public static String x;
-    
+
     public ReporteVentas() {
         initComponents();
         setTitle("Reporte Ventas");
         x = "x";
-        
+        jTextField_Reportes.setEnabled(false);
+        jFormattedTextField_FecIni.setEnabled(false);
+        jFormattedTextField_FecFIn.setEnabled(false);
+
     }
 
     /**
@@ -70,15 +74,16 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
                 try {
-                    
+
                     frame.setMaximum(true);
                 } catch (Exception e) {
                 }
                 frame.setVisible(true);
             }
-            if (jComboBox_Ventas.getSelectedItem().equals("N VENTA")) {
+            if (jComboBox_Ventas.getSelectedItem().equals("GRÁFICOS")) {
                 parametros.put("numVenta", jTextField_Reportes.getText());
-                JasperReport reporte = JasperCompileManager.compileReport("src\\Reportes\\reporteAutoxPlaca.jrxml");
+                //JasperReport reporte = JasperCompileManager.compileReport("src\\Reportes\\reporteAutoxPlaca.jrxml");
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptVentas.jasper"));
                 JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
                 JInternalFrame frame = new JInternalFrame("Reporte");
                 frame.getContentPane().add(new JRViewer(imprimir));
@@ -89,28 +94,18 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
                 try {
-                    
+
                     frame.setMaximum(true);
                 } catch (Exception e) {
                 }
                 frame.setVisible(true);
-                
+
             }
-            if (jComboBox_Ventas.getSelectedItem().equals("CÉDULA")) {
-                if (Metodos.verificadorCédula(jTextField_Reportes.getText())) {
-                    FacturaCliente fac = new FacturaCliente(null, true, jTextField_Reportes.getText());
-                    if (fac.clienteExiste) {
-                        fac.setVisible(true);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Cédula incorrecta");
-                }
-                
-                
-            }
-            if (jComboBox_Ventas.getSelectedItem().equals("MARCA")) {
-                parametros.put("marca", jTextField_Reportes.getText());
-                JasperReport reporte = JasperCompileManager.compileReport("src\\reportes\\reporteAutoxMarca.jrxml");
+            if (jComboBox_Ventas.getSelectedItem().equals("FECHAS")) {
+                parametros.put("fecIni", jTextField_Reportes.getText());
+                parametros.put("fecFin", jTextField_Reportes.getText());
+                //JasperReport reporte = JasperCompileManager.compileReport("src\\Reportes\\reporteAutoxPlaca.jrxml");
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptVentas1.jasper"));
                 JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
                 JInternalFrame frame = new JInternalFrame("Reporte");
                 frame.getContentPane().add(new JRViewer(imprimir));
@@ -120,22 +115,68 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                 frame.setMaximizable(true);
                 frame.setSize(1000, 700);
                 Menu.jDesktopPane1.add(frame);
+                try {
+
+                    frame.setMaximum(true);
+                } catch (Exception e) {
+                }
                 frame.setVisible(true);
+
             }
-//            if (jComboBox_Ventas.getSelectedItem().equals("FECHA")) {
-//                parametros.put("fecha", jTextField_Reportes.getText());
-//                JasperReport reporte = JasperCompileManager.compileReport("src\\reportes\\reporteAutoxAño.jrxml");
-//                JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
-//                JInternalFrame frame = new JInternalFrame("Reporte");
-//                frame.getContentPane().add(new JRViewer(imprimir));
-//                frame.pack();
-//                frame.setResizable(true);
-//                frame.setClosable(true);
-//                frame.setMaximizable(true);
-//                frame.setSize(1000, 700);
-//                Menu.jDesktopPane1.add(frame);
-//                frame.setVisible(true);
+//            if (jComboBox_Ventas.getSelectedItem().equals("FECHAS")) {
+//                if (Metodos.verificadorCédula(jTextField_Reportes.getText())) {
+//                    FacturaCliente fac = new FacturaCliente(null, true, jTextField_Reportes.getText());
+//                    if (fac.clienteExiste) {
+//                        fac.setVisible(true);
+//                    }
+//                } else {
+//                    JOptionPane.showMessageDialog(null, "Cédula incorrecta");
+//                }
+//
+//
 //            }
+            if (jComboBox_Ventas.getSelectedItem().equals("PRODUCTOS VENDIDOS")) {
+                //parametros.put("marca", jTextField_Reportes.getText());
+                //JasperReport reporte = JasperCompileManager.compileReport("src\\reportes\\reporteAutoxMarca.jrxml");
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptProdMasVendido.jasper"));
+                JasperPrint imprimir = JasperFillManager.fillReport(reporte, null, cn);
+                JInternalFrame frame = new JInternalFrame("Reporte");
+                frame.getContentPane().add(new JRViewer(imprimir));
+                frame.pack();
+                frame.setResizable(true);
+                frame.setClosable(true);
+                frame.setMaximizable(true);
+                frame.setSize(1000, 700);
+                Menu.jDesktopPane1.add(frame);
+                try {
+
+                    frame.setMaximum(true);
+                } catch (Exception e) {
+                }
+                frame.setVisible(true);
+
+            }
+            if (jComboBox_Ventas.getSelectedItem().equals("MEJOR CLIENTE")) {
+                parametros.put("cedCli", jTextField_Reportes.getText());
+                //JasperReport reporte = JasperCompileManager.compileReport("src\\reportes\\reporteAutoxAño.jrxml");
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptMejorCliente.jasper"));
+                JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
+                JInternalFrame frame = new JInternalFrame("Reporte");
+                frame.getContentPane().add(new JRViewer(imprimir));
+                frame.pack();
+                frame.setResizable(true);
+                frame.setClosable(true);
+                frame.setMaximizable(true);
+                frame.setSize(1000, 700);
+                Menu.jDesktopPane1.add(frame);
+                try {
+
+                    frame.setMaximum(true);
+                } catch (Exception e) {
+                }
+                frame.setVisible(true);
+
+            }
             if (jComboBox_Ventas.getSelectedItem().equals("SELECCIONE")) {
                 JOptionPane.showMessageDialog(null, "SELECCIONE OPCION");
             }
@@ -144,12 +185,12 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
         } catch (JRException ex) {
         }
     }
-    
+
     public static void main(String args[]) {
-        
-        
+
+
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
+
             public void run() {
                 new ReporteVentas().setVisible(true);
             }
@@ -162,29 +203,33 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
         jComboBox_Ventas = new javax.swing.JComboBox();
         jTextField_Reportes = new javax.swing.JTextField();
         btn_Generar_Reporte = new javax.swing.JButton();
+        jFormattedTextField_FecIni = new javax.swing.JFormattedTextField();
+        jFormattedTextField_FecFIn = new javax.swing.JFormattedTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setClosable(true);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
             }
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                formInternalFrameClosing(evt);
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
             }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
         });
 
         jLabel1.setText("Buscar por: ");
 
-        jComboBox_Ventas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SELECCIONE", "GENERAL", "CÉDULA" }));
+        jComboBox_Ventas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SELECCIONE", "GENERAL", "GRÁFICOS", "FECHAS", "PRODUCTOS VENDIDOS", "MEJOR CLIENTE" }));
         jComboBox_Ventas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox_VentasItemStateChanged(evt);
@@ -198,19 +243,55 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
             }
         });
 
+        try {
+            jFormattedTextField_FecIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            jFormattedTextField_FecFIn.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jFormattedTextField_FecFIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextField_FecFInActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Fecha inicio:");
+
+        jLabel3.setText("Fecha fin:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox_Ventas, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(jTextField_Reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btn_Generar_Reporte, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(21, 21, 21)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jComboBox_Ventas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jFormattedTextField_FecIni, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField_Reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_Generar_Reporte, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextField_FecFIn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -222,7 +303,13 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
                     .addComponent(jComboBox_Ventas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField_Reportes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_Generar_Reporte))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jFormattedTextField_FecIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jFormattedTextField_FecFIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -232,24 +319,46 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         imprimirReporte();
     }//GEN-LAST:event_btn_Generar_ReporteActionPerformed
-    
+
     private void jComboBox_VentasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_VentasItemStateChanged
         // TODO add your handling code here:
-        if (jComboBox_Ventas.getSelectedItem().equals("GENERAL")) {
+        if (jComboBox_Ventas.getSelectedItem().equals("SELECCIONE") || jComboBox_Ventas.getSelectedItem().equals("GENERAL") || jComboBox_Ventas.getSelectedItem().equals("GRÁFICOS")
+                || jComboBox_Ventas.getSelectedItem().equals("PRODUCTOS VENDIDOS")) {
             jTextField_Reportes.setEnabled(false);
         } else {
             jTextField_Reportes.setEnabled(true);
+
+        }
+
+
+        if (jComboBox_Ventas.getSelectedItem().equals("FECHAS")) {
+            jFormattedTextField_FecIni.setEnabled(true);
+            jFormattedTextField_FecFIn.setEnabled(true);
+            jTextField_Reportes.setEnabled(false);
+          
+        } else {
+            jFormattedTextField_FecIni.setEnabled(false);
+            jFormattedTextField_FecFIn.setEnabled(false);
+            
         }
     }//GEN-LAST:event_jComboBox_VentasItemStateChanged
-    
+
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
         x = null;
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void jFormattedTextField_FecFInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField_FecFInActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField_FecFInActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Generar_Reporte;
     private javax.swing.JComboBox jComboBox_Ventas;
+    private javax.swing.JFormattedTextField jFormattedTextField_FecFIn;
+    private javax.swing.JFormattedTextField jFormattedTextField_FecIni;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTextField_Reportes;
     // End of variables declaration//GEN-END:variables
 }

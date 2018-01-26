@@ -32,6 +32,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         PonerImagenFondo();
         this.setLocationRelativeTo(null);
         usuario = obtenerUsuario();
+        
 
     }
     
