@@ -277,6 +277,7 @@ public class Pedidos extends javax.swing.JDialog {
         }
         if (n == i) {
             //JOptionPane.showMessageDialog(null, "Venta exitosa!");
+            
             vaciarCarrito();
             valoresIniciales();
             existeProd = false;
@@ -304,12 +305,16 @@ public class Pedidos extends javax.swing.JDialog {
 
     public void valoresIniciales() {
         jTextField_NumElim.setText("");
+        jTextField_Cod_Prov.setText("");
+        jTextField_Dir_Prov.setText("");
+        jTextField_Nom_Prov.setText("");
+        jTextField_Tel_Prov.setText("");
         jTextField_NumElim.setEnabled(false);
         jButtonFacturar.setEnabled(false);
         jButton_Eliminar.setEnabled(false);}
 
     public void crearCabecera() {
-        String sql = "insert into pedidos_cab (fec_ped,cod_pro_pid,ced_usu_pid) values (?,?,?)";
+        String sql = "insert into pedidos_cab (fec_ped,cod_pro_pid,ced_usu_pid,confirmado) values (?,?,?,'N')";
         cn = cc.conectar();
         ArrayList<Producto> productos = obtenerProductos();
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");

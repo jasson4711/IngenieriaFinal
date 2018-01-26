@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptVentas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86efe9d0-61c8-4088-8219-ba5614595d68">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="18"/>
+	<parameter name="fecIni" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecFin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select sum(tot_ven), fec_ven
+from ventas_cab
+where fec_ven between $P{fecIni} and $P{fecFin}
+group by fec_ven
+order by fec_ven asc]]>
+	</queryString>
+	<field name="sum(tot_ven)" class="java.lang.Double"/>
+	<field name="fec_ven" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="92" width="555" height="1" uuid="52a30922-7114-45e5-9174-ca629bca69ef"/>
+			</line>
+			<staticText>
+				<reportElement x="65" y="54" width="424" height="35" uuid="49b6d900-00ba-4c15-ad3c-7f4e046e3bae"/>
+				<textElement textAlignment="Center">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de ventas]]></text>
+			</staticText>
+			<image hAlign="Center" isUsingCache="false">
+				<reportElement x="2" y="4" width="50" height="45" uuid="ccd9ffc7-054b-4f62-8632-5ee22d78805d"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="105" y="4" width="347" height="45" forecolor="#CCCCFF" backcolor="#000000" uuid="bba08dc3-2d57-4fb4-af7a-a60371eba0f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOÑA ROSITA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="49" width="555" height="1" uuid="852e57c1-2bc6-4640-8f02-a4938f431054"/>
+			</line>
+		</band>
+	</title>
+	<summary>
+		<band height="306" splitType="Stretch">
+			<barChart>
+				<chart>
+					<reportElement x="0" y="0" width="555" height="289" uuid="a9690e5f-4107-4a28-93e8-899dbb35ea5e"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{fec_ven}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{sum(tot_ven)}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{sum(tot_ven)}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

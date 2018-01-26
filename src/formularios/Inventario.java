@@ -114,8 +114,8 @@ public class Inventario extends javax.swing.JDialog {
     public void establecerTamañoColumnas() {
         modeloColumna = jTable_Inventario.getColumnModel();
         modeloColumna.getColumn(0).setPreferredWidth(60);
-        modeloColumna.getColumn(1).setPreferredWidth(120);
-        modeloColumna.getColumn(2).setPreferredWidth(120);
+        modeloColumna.getColumn(1).setPreferredWidth(80);
+        modeloColumna.getColumn(2).setPreferredWidth(60);
         modeloColumna.getColumn(3).setPreferredWidth(70);
         modeloColumna.getColumn(4).setPreferredWidth(70);
         modeloColumna.getColumn(5).setPreferredWidth(55);

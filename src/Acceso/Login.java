@@ -27,6 +27,9 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    int numIntentos = 0;
+    boolean correcto = false;
+
     public Login() {
         initComponents();
         ponerIcono();
@@ -34,21 +37,21 @@ public class Login extends javax.swing.JFrame {
         PonerImagenFondo();
         this.setLocationRelativeTo(null);
         jLabel_Usuario.setVisible(false);
-        
+
     }
-    
-    public void ponerIcono(){
-        try{
+
+    public void ponerIcono() {
+        try {
             this.setIconImage(new ImageIcon(getClass().getResource("../imagenes/LogoR.png")).getImage());
             System.out.println("hola");
-        }catch(Exception ex){
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "error poniendo fondo imagen");
         }
-        
+
     }
-    
+
     private void PonerImagenFondo() {
-        
+
         ((JPanel) getContentPane()).setOpaque(false);
         ImageIcon uno = new ImageIcon(this.getClass().getResource("/imagenes/fondo1.jpg"));
         JLabel fondo = new JLabel();
@@ -56,15 +59,15 @@ public class Login extends javax.swing.JFrame {
         getLayeredPane().add(fondo, JLayeredPane.FRAME_CONTENT_LAYER);
         fondo.setBounds(0, 0, uno.getIconWidth(), uno.getIconHeight());
     }
-    
+
     private void EstablecerValoresPorDefecto() {
         this.setSize(470, 270);
         ucTextNumeros_Usuario.setText("");
         jPassword_Pass.setText("");
     }
-    
+
     public void cargarUsuarios() throws HeadlessException, Exception {
-        
+
         if (ucTextNumeros_Usuario.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe ingresar el usuario");
             ucTextNumeros_Usuario.requestFocus();
@@ -86,17 +89,18 @@ public class Login extends javax.swing.JFrame {
                     String var1 = rs.getString("COD_USU").toUpperCase();
                     String var2 = Encriptacion.Desencriptar(rs.getString("CLA_USU"));
                     String var5 = rs.getString("CARGO");
-                    
+
                     if (var1.equals(nom_usu) && var2.equals(cla_usu)) {
+                        correcto = true;
                         if ("Vendedor".equals(var5)) {
                             this.dispose();
                             FramePrincipal men = new FramePrincipal(var1);
                             men.btn_Administrador.setEnabled(false);
                             men.btn_Reportes.setEnabled(false);
                             men.btn_Proveedores.setEnabled(false);
-
+                            men.btn_Pedidos.setEnabled(false);
                             men.setVisible(true);
-                            
+
                         } else if ("Administrador".equals(var5)) {
                             this.dispose();
                             FramePrincipal men = new FramePrincipal(var1);
@@ -107,7 +111,7 @@ public class Login extends javax.swing.JFrame {
                             men.btn_Reportes.setEnabled(true);
                             men.btn_Proveedores.setEnabled(true);
                             men.setVisible(true);
-                            
+
                         } else if ("Bodeguero".equals(var5)) {
                             this.dispose();
                             FramePrincipal men = new FramePrincipal(var1);
@@ -117,24 +121,30 @@ public class Login extends javax.swing.JFrame {
                             men.btn_Ventas.setEnabled(false);
                             men.btn_Reportes.setEnabled(false);
                             men.btn_Proveedores.setEnabled(false);
-
+                            men.btn_Pedidos.setEnabled(true);
                             men.setVisible(true);
-                            
+
                         }
                     } else {
+
+
                         jLabel_Usuario.setVisible(true);
                         ucTextNumeros_Usuario.setText("");
                         ucTextNumeros_Usuario.requestFocus();
                         jPassword_Pass.setText("");
                     }
-
-
-
 //                {
 //          
 ////                    j.setVisible(true);
 ////                    txtcalve.setText("");
 //                }
+                }
+                if (!correcto) {
+                    if (numIntentos == 2) {
+                        this.dispose();
+                    } else {
+                        numIntentos += 1;
+                    }
                 }
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex);
@@ -269,12 +279,12 @@ public class Login extends javax.swing.JFrame {
             //Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btn_AceptarActionPerformed
-    
+
     private void btn_CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelarActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_btn_CancelarActionPerformed
-    
+
     private void ucTextNumeros_UsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ucTextNumeros_UsuarioKeyTyped
         // TODO add your handling code here:
         if (ucTextNumeros_Usuario.getText().length() >= 10) {
@@ -317,7 +327,7 @@ public class Login extends javax.swing.JFrame {
          * Create and display the form
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
+
             public void run() {
                 new Login().setVisible(true);
             }

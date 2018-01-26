@@ -145,11 +145,22 @@ public class InventarioProveedor extends javax.swing.JDialog {
     }
 
     public int obtenerCantidad() {
-        return Integer.valueOf(jTextField_Cant.getText());
+        try{
+            return Integer.valueOf(jTextField_Cant.getText());
+        }catch(Exception ex){
+            return 0;
+        }
+        
     }
 
+    
     public String enviarCodigo() {
-        return jLabel_Codigo.getText();
+        try{
+            return jLabel_Codigo.getText();
+        }catch(Exception ex){
+            return "";
+        }
+        
     }
 
     @SuppressWarnings("unchecked")

@@ -2,10 +2,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptOrdenPedido" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ae570502-fd21-408a-970a-81ea043b34e3">
 	<property name="ireport.zoom" value="0.9090909090909091"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="162"/>
+	<property name="ireport.y" value="336"/>
 	<parameter name="numPed" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select c.num_ped numPedido, DATE_FORMAT(c.fec_ped, "%d-%m-%Y") fecha,c.cod_pro_pid codPro,c.ced_usu_pid cedUsu,pro.nom_pro nomPro,pro.dir_pro dirPro, CONCAT(CONCAT(u.nom_usu,' '),u.ape_usu) nomUsu,CONCAT(CONCAT(CONCAT(CONCAT(p.tip_pro,' '),p.mar_pro),' '),col.nom_col) producto,d.cantidad cant
+		<![CDATA[select c.num_ped numPedido, DATE_FORMAT(c.fec_ped, "%d-%m-%Y") fecha,c.cod_pro_pid codPro,c.ced_usu_pid cedUsu,pro.nom_pro nomPro,pro.dir_pro dirPro, CONCAT(CONCAT(u.nom_usu,' '),u.ape_usu) nomUsu,CONCAT(CONCAT(CONCAT(CONCAT(p.tip_pro,' '),p.mar_pro),' '),col.nom_col) producto,d.cantidad cant, p.id_pro codProd, p.des_pro, c.confirmado
 from pedidos_cab c, proveedores pro, usuarios u,productos p,detalle_pedidos d, colores col
 where c.cod_pro_pid = pro.cod_pro
 and c.num_ped = d.num_ped_p
@@ -23,6 +23,13 @@ and c.num_ped = $P{numPed}]]>
 	<field name="nomUsu" class="java.lang.String"/>
 	<field name="producto" class="java.lang.String"/>
 	<field name="cant" class="java.lang.Integer"/>
+	<field name="codProd" class="java.lang.String"/>
+	<field name="des_pro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="confirmado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<title>
 		<band height="199" splitType="Stretch">
 			<rectangle>
@@ -148,33 +155,72 @@ Joaquín Lalama y Avenida Cevallos
 	<columnHeader>
 		<band height="38" splitType="Stretch">
 			<staticText>
-				<reportElement x="305" y="10" width="59" height="20" uuid="16c110da-ef17-4084-953d-32c67d975846"/>
+				<reportElement x="461" y="10" width="59" height="20" uuid="16c110da-ef17-4084-953d-32c67d975846"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="102" y="10" width="63" height="20" uuid="c8bcb5d4-1fcc-470e-a909-242fd076586b"/>
+				<reportElement x="119" y="10" width="63" height="20" uuid="c8bcb5d4-1fcc-470e-a909-242fd076586b"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[ARTÍCULO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="75" height="20" uuid="e4ca5492-cd3b-421c-917c-6ace271900eb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="10" width="100" height="20" uuid="2e173e9b-2f7e-4284-b35a-45aec3e74346"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCCIÓN]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="44" splitType="Stretch">
 			<textField>
-				<reportElement x="102" y="12" width="163" height="20" uuid="4dc81c64-0ca1-4dcb-a4f4-c25e7b997d4e"/>
+				<reportElement x="119" y="12" width="154" height="20" uuid="4dc81c64-0ca1-4dcb-a4f4-c25e7b997d4e"/>
 				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="305" y="12" width="32" height="20" uuid="2c014b35-6d27-4176-9c26-f9e593501ef0"/>
+				<reportElement x="461" y="12" width="59" height="20" uuid="2c014b35-6d27-4176-9c26-f9e593501ef0"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{cant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="12" width="92" height="20" uuid="57c4f7dd-f69a-4894-9561-17cc440da3c9"/>
+				<textFieldExpression><![CDATA[$F{codProd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="12" width="158" height="20" uuid="36f02f2d-eb88-4c06-ad65-cc82dac482af"/>
+				<textFieldExpression><![CDATA[$F{des_pro}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="252">
+			<staticText>
+				<reportElement x="346" y="222" width="100" height="20" uuid="ec15bf43-6b06-4e1b-9945-863f67e5875c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONFIRMADO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="461" y="222" width="59" height="20" uuid="7ce0d82a-7ec8-4b6e-a5d1-e9446edaa1a3"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{confirmado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 	<noData>
 		<band height="455">
 			<staticText>

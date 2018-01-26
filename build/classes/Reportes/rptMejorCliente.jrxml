@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptMejorCliente" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="54d0b24a-b627-4a5f-b120-da51f4af70be">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cedCli" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select sum(c.tot_ven) totVen, sum(d.cantidad) totCan,c.ced_cli_ven cedCli,CONCAT(CONCAT(cli.nom_cli,' '),cli.ape_cli) apeCli
+from ventas_cab c, detalle_ventas d, clientes cli
+where c.num_ven = d.num_ven_p
+and c.ced_cli_ven = cli.ced_cli
+and c.ced_cli_ven = $P{cedCli}
+group by c.tot_ven
+]]>
+	</queryString>
+	<field name="totVen" class="java.lang.Double"/>
+	<field name="totCan" class="java.math.BigDecimal"/>
+	<field name="cedCli" class="java.lang.String"/>
+	<field name="apeCli" class="java.lang.String"/>
+	<title>
+		<band height="109" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="97" width="555" height="1" uuid="ff94d0c9-0363-42a0-b659-757e274fd630"/>
+			</line>
+			<staticText>
+				<reportElement x="65" y="59" width="424" height="35" uuid="ba66e6c8-96f5-4e80-875f-8f40d88100ce"/>
+				<textElement textAlignment="Center">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte mejor cliente]]></text>
+			</staticText>
+			<image hAlign="Center" isUsingCache="false">
+				<reportElement x="2" y="9" width="50" height="45" uuid="321f2186-eb4b-4841-93aa-93daf7b2657a"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="105" y="9" width="347" height="45" forecolor="#CCCCFF" backcolor="#000000" uuid="d552027e-beb5-4531-8d9e-b44a5de26ef4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOÑA ROSITA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="54" width="555" height="1" uuid="9f8caa4e-4103-49da-bec4-7df7a41dee84"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="92" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="81" uuid="d1929c1f-0551-4a79-83b5-f9caca4d7074"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="19" y="13" width="46" height="20" uuid="87c1840e-562d-4646-8147-231995f73eef"/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="46" width="46" height="20" uuid="7d922fe3-097b-47cd-ae18-f88e482440eb"/>
+				<text><![CDATA[Cédula;]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="93" y="46" width="100" height="20" uuid="7ff685f2-c281-4b94-9f29-3ac32d2ba517"/>
+				<textFieldExpression><![CDATA[$F{cedCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="93" y="13" width="100" height="20" uuid="77e077aa-d5a7-4b57-a4b0-5527e47c6749"/>
+				<textFieldExpression><![CDATA[$F{apeCli}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="111">
+			<staticText>
+				<reportElement x="19" y="55" width="149" height="20" uuid="79c93abd-771e-4a14-be8e-5cbf4a514c42"/>
+				<text><![CDATA[Valor total en compras:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="18" width="149" height="20" uuid="698ba5b4-3804-4312-a4d8-9bbe11e36209"/>
+				<text><![CDATA[Total artículos comprados:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="193" y="55" width="100" height="20" uuid="f4866cc3-7531-43af-9c41-0ad5fef8b279"/>
+				<textFieldExpression><![CDATA[$F{totVen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="193" y="18" width="100" height="20" uuid="2d3bfecc-e084-46b2-a4ef-590bf3a1dc5a"/>
+				<textFieldExpression><![CDATA[$F{totCan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+	<noData>
+		<band height="50"/>
+	</noData>
+</jasperReport>

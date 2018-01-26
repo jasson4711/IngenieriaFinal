@@ -115,6 +115,7 @@ public class Proveedores extends javax.swing.JDialog {
                     jTextField_Cod_Pro.setEnabled(false);
                     botonesBorrar();
                     botonesActualizar();
+                    jButton1.setEnabled(true);
                 }
             }
         });
@@ -408,6 +409,7 @@ public class Proveedores extends javax.swing.JDialog {
         });
 
         jButton1.setText("Hacer pedido");
+        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
