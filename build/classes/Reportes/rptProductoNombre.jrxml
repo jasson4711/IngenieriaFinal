@@ -17,7 +17,8 @@
 FROM
      `productos` productos INNER JOIN `tallas` tallas ON productos.`id_tal_per` = tallas.`ID_TAL`
      INNER JOIN `colores` colores ON productos.`id_col_per` = colores.`id_col`
-where productos.`TIP_PRO` like $P{nombre}"%"]]>
+where productos.`TIP_PRO` like $P{nombre}"%"
+order by productos.`TIP_PRO`]]>
 	</queryString>
 	<field name="productos_ID_PRO" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -43,23 +44,31 @@ where productos.`TIP_PRO` like $P{nombre}"%"]]>
 	<field name="productos_STO_PRO" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
-		<band height="58" splitType="Stretch">
+		<band height="111" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="8" width="555" height="1" uuid="d79ead1c-8c37-44d5-9ec3-e306686127af"/>
+				<reportElement x="-1" y="45" width="555" height="1" uuid="d79ead1c-8c37-44d5-9ec3-e306686127af"/>
 			</line>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1" uuid="fcb67077-4891-42d5-86c3-d5335bf8429a"/>
+				<reportElement positionType="FixRelativeToBottom" x="-1" y="88" width="555" height="1" uuid="fcb67077-4891-42d5-86c3-d5335bf8429a"/>
 			</line>
 			<staticText>
-				<reportElement x="65" y="13" width="424" height="35" uuid="ca889895-1183-4e18-b5b9-88964600826c"/>
+				<reportElement x="64" y="50" width="424" height="35" uuid="ca889895-1183-4e18-b5b9-88964600826c"/>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Reporte productos por nombre]]></text>
+			</staticText>
+			<image hAlign="Center" isUsingCache="false">
+				<reportElement x="1" y="0" width="50" height="45" uuid="fd35d1d1-baa8-45eb-933f-af9ae12c19c8"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="104" y="0" width="347" height="45" forecolor="#CCCCFF" backcolor="#000000" uuid="77a64507-d64d-4cc9-bedd-f22ee9f3f824"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOÑA ROSITA]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -215,7 +224,7 @@ where productos.`TIP_PRO` like $P{nombre}"%"]]>
 				<textElement textAlignment="Right">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField" x="1" y="6" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="e1ac13d1-7d85-4940-97f9-a63d111f19d4"/>

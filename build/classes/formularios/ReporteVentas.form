@@ -45,7 +45,7 @@
                   <Component id="jTextField_Reportes" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btn_Generar_Reporte" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="49" max="32767" attributes="0"/>
+              <EmptySpace pref="53" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

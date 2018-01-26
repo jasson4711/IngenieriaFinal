@@ -2,10 +2,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e782b3af-20ea-4c02-b196-e3d5b28d2d67">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="480"/>
+	<property name="ireport.y" value="194"/>
 	<parameter name="numFac" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[select c.num_ven numFactura, DATE_FORMAT(c.fec_ven, "%d-%m-%Y") fecha,c.ced_cli_ven cedCli,c.cod_usu_ven codUsu,cli.nom_cli nomCli,cli.ape_cli apeCli,u.nom_usu nomUsu,u.ape_usu apeUsu,p.tip_pro nomPro,p.mar_pro marcaPro,p.pre_ven prePro,d.cantidad cant,d.pre_tot_p preTot, c.tot_ven total, round((c.tot_ven/1.12),3) subtotal, round((c.tot_ven-(c.tot_ven/1.12)),3) valIva, col.nom_col color
+		<![CDATA[select c.num_ven numFactura, DATE_FORMAT(c.fec_ven, "%d-%m-%Y") fecha,c.ced_cli_ven cedCli,c.cod_usu_ven codUsu,CONCAT(CONCAT(cli.nom_cli,' '),cli.ape_cli) apeCli, CONCAT(CONCAT(u.nom_usu,' '),u.ape_usu) nomUsu,CONCAT(CONCAT(CONCAT(CONCAT(p.tip_pro,' '),p.mar_pro),' '),col.nom_col) producto,p.pre_ven prePro,d.cantidad cant,d.pre_tot_p preTot, c.tot_ven total, round((c.tot_ven/1.12),3) subtotal, round((c.tot_ven-(c.tot_ven/1.12)),3) valIva, c.descuento
 from ventas_cab c, clientes cli, usuarios u,productos p,detalle_ventas d, colores col
 where c.ced_cli_ven = cli.ced_cli
 and c.num_ven = d.num_ven_p
@@ -14,55 +14,20 @@ and p.id_col_per = col.id_col
 and c.cod_usu_ven = u.cod_usu
 and c.num_ven = $P{numFac}]]>
 	</queryString>
-	<field name="numFactura" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="fecha" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cedCli" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="codUsu" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nomCli" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="apeCli" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nomUsu" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="apeUsu" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nomPro" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="marcaPro" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="prePro" class="java.lang.Float">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cant" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="preTot" class="java.lang.Float">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="total" class="java.lang.Float">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="subtotal" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="valIva" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="color" class="java.lang.String">
+	<field name="numFactura" class="java.lang.Integer"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="cedCli" class="java.lang.String"/>
+	<field name="codUsu" class="java.lang.String"/>
+	<field name="apeCli" class="java.lang.String"/>
+	<field name="nomUsu" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="prePro" class="java.lang.Float"/>
+	<field name="cant" class="java.lang.Integer"/>
+	<field name="preTot" class="java.lang.Float"/>
+	<field name="total" class="java.lang.Float"/>
+	<field name="subtotal" class="java.lang.Double"/>
+	<field name="valIva" class="java.lang.Double"/>
+	<field name="descuento" class="java.lang.Float">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="Subtotal_1" class="java.lang.Integer" resetType="Page" calculation="Count">
@@ -159,24 +124,8 @@ Joaquín Lalama y Avenida Cevallos
 				<text><![CDATA[CÉDULA:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="95" y="13" width="114" height="20" uuid="6dd89671-ad03-4779-b08e-aa0b47986003"/>
-				<textFieldExpression><![CDATA[$F{nomCli}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="410" y="13" width="100" height="20" uuid="d980db2f-8659-4722-a90e-05a0ea12083f"/>
 				<textFieldExpression><![CDATA[$F{cedCli}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="224" y="13" width="106" height="20" uuid="4c91bd8f-4b2e-4a41-873d-99365a5f7152"/>
-				<textFieldExpression><![CDATA[$F{apeCli}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="224" y="55" width="106" height="20" uuid="945dfb28-a749-4d4f-a1c8-a67568f68f00"/>
-				<textFieldExpression><![CDATA[$F{apeUsu}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="95" y="55" width="114" height="20" uuid="cdd51716-0131-4567-863d-4b2615b753e7"/>
-				<textFieldExpression><![CDATA[$F{nomUsu}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="17" y="55" width="63" height="20" uuid="01dfb7e5-f871-4d52-b22c-32e0ae05e2a1"/>
@@ -188,13 +137,21 @@ Joaquín Lalama y Avenida Cevallos
 			<rectangle>
 				<reportElement mode="Transparent" x="0" y="0" width="531" height="95" uuid="935b5ff2-19dd-43bf-b725-1859b209ff37"/>
 			</rectangle>
+			<textField>
+				<reportElement x="91" y="13" width="187" height="20" uuid="7fc8375e-ebd2-4ed1-9cc9-d0adea354998"/>
+				<textFieldExpression><![CDATA[$F{apeCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="55" width="187" height="20" uuid="a1a8c57a-85de-4b96-8716-69527dd14a62"/>
+				<textFieldExpression><![CDATA[$F{nomUsu}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="36" splitType="Stretch">
 			<staticText>
-				<reportElement x="39" y="0" width="100" height="20" uuid="1cbca6cc-521b-4a61-a7b8-d13e4527f894"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="17" y="0" width="63" height="20" uuid="1cbca6cc-521b-4a61-a7b8-d13e4527f894"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[ARTÍCULO]]></text>
@@ -225,10 +182,6 @@ Joaquín Lalama y Avenida Cevallos
 	<detail>
 		<band height="22" splitType="Stretch">
 			<textField>
-				<reportElement x="17" y="0" width="92" height="20" uuid="71ea8b03-8420-47cc-b83b-b84b956b285b"/>
-				<textFieldExpression><![CDATA[$F{nomPro}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="220" y="0" width="32" height="20" uuid="67870e0a-ee2f-452a-9345-469e8423fd28"/>
 				<textFieldExpression><![CDATA[$F{cant}]]></textFieldExpression>
 			</textField>
@@ -241,22 +194,22 @@ Joaquín Lalama y Avenida Cevallos
 				<textFieldExpression><![CDATA[$F{preTot}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="119" y="0" width="72" height="20" uuid="cef5ff42-f522-4cba-8f4d-daab4fc7cd5a"/>
-				<textFieldExpression><![CDATA[$F{color}]]></textFieldExpression>
+				<reportElement x="17" y="2" width="163" height="20" uuid="3e21180c-5db0-4977-89bb-c7e9ad4f474f"/>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
-		<band height="118">
+		<band height="160">
 			<staticText>
-				<reportElement x="370" y="98" width="47" height="20" uuid="d665615c-1f8f-4a78-baad-39ecd3920d72"/>
+				<reportElement x="370" y="140" width="47" height="20" uuid="d665615c-1f8f-4a78-baad-39ecd3920d72"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="455" y="98" width="100" height="20" uuid="ed57a366-b501-4a3b-9a93-8337a4f9182b"/>
+				<reportElement x="455" y="140" width="100" height="20" uuid="ed57a366-b501-4a3b-9a93-8337a4f9182b"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -281,6 +234,17 @@ Joaquín Lalama y Avenida Cevallos
 				</textElement>
 				<text><![CDATA[SUBTOTAL:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="370" y="105" width="78" height="20" uuid="41f95c19-f53a-4e69-9e40-5c78b1585816"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCUENTO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="105" width="99" height="20" uuid="58af17de-5f79-4102-9e36-8dc10cd3538a"/>
+				<textFieldExpression><![CDATA[$F{descuento}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 	<noData>

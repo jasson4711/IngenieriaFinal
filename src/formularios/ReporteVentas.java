@@ -54,9 +54,9 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
             if (jComboBox_Ventas.getSelectedItem().equals("GENERAL")) {
                 //parametros.put("placa", txtReportes.getText());
                 // JasperReport reporte = (JasperReport) JRLoader.loadObject("src\\Reportes\\rptProductos.jrxml");
-                JasperReport reporte = (JasperReport)JRLoader.loadObject(getClass().getResource("/Reportes/rptVentasGenerales.jasper"));
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptVentasGenerales.jasper"));
                 JasperPrint imprimir = JasperFillManager.fillReport(reporte, null, cn);
-               // JasperViewer.viewReport(imprimir);
+                // JasperViewer.viewReport(imprimir);
                 JInternalFrame frame = new JInternalFrame("Reporte");
                 frame.getContentPane().add(new JRViewer(imprimir));
                 frame.pack();
@@ -93,11 +93,16 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
 
             }
             if (jComboBox_Ventas.getSelectedItem().equals("CÉDULA")) {
-                FacturaCliente fac = new FacturaCliente(null,true,jTextField_Reportes.getText());
-                if(fac.clienteExiste){
-                    fac.setVisible(true);
+                if (Metodos.verificadorCédula(jTextField_Reportes.getText())) {
+                    FacturaCliente fac = new FacturaCliente(null, true, jTextField_Reportes.getText());
+                    if (fac.clienteExiste) {
+                        fac.setVisible(true);
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Cédula incorrecta");
                 }
-                
+
+
             }
             if (jComboBox_Ventas.getSelectedItem().equals("MARCA")) {
                 parametros.put("marca", jTextField_Reportes.getText());
@@ -130,7 +135,7 @@ public class ReporteVentas extends javax.swing.JInternalFrame {
             if (jComboBox_Ventas.getSelectedItem().equals("SELECCIONE")) {
                 JOptionPane.showMessageDialog(null, "SELECCIONE OPCION");
             }
-            
+
             //JasperViewer.viewReport(imprimir,false);
         } catch (JRException ex) {
         }

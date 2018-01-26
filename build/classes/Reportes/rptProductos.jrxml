@@ -16,52 +16,46 @@
      productos.`DES_PRO` AS productos_DES_PRO
 FROM
      `productos` productos INNER JOIN `colores` colores ON productos.`id_col_per` = colores.`id_col`
-     INNER JOIN `tallas` tallas ON productos.`id_tal_per` = tallas.`ID_TAL`]]>
+     INNER JOIN `tallas` tallas ON productos.`id_tal_per` = tallas.`ID_TAL`
+ORDER BY productos.`TIP_PRO`]]>
 	</queryString>
-	<field name="productos_ID_PRO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="productos_TIP_PRO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="tallas_DES_TAL" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="colores_nom_col" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="productos_MAR_PRO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="productos_PRE_COM" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="productos_PRE_VEN" class="java.lang.Float">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="productos_STO_PRO" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="productos_DES_PRO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="productos_ID_PRO" class="java.lang.String"/>
+	<field name="productos_TIP_PRO" class="java.lang.String"/>
+	<field name="tallas_DES_TAL" class="java.lang.String"/>
+	<field name="colores_nom_col" class="java.lang.String"/>
+	<field name="productos_MAR_PRO" class="java.lang.String"/>
+	<field name="productos_PRE_COM" class="java.math.BigDecimal"/>
+	<field name="productos_PRE_VEN" class="java.lang.Float"/>
+	<field name="productos_STO_PRO" class="java.lang.Integer"/>
+	<field name="productos_DES_PRO" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="52" splitType="Stretch">
+		<band height="121" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="8" width="555" height="1" uuid="a73adb37-4936-4a9f-a36f-2bcdd8c0a8dd"/>
-			</line>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1" uuid="411e6e2b-be55-48f6-b0c7-487aa806e422"/>
+				<reportElement x="1" y="55" width="555" height="1" uuid="66a65b4a-0f25-416d-a30a-21f7dd724fbf"/>
 			</line>
 			<staticText>
-				<reportElement x="65" y="13" width="424" height="35" uuid="fe8d7c21-3963-4682-ab15-969dd0a91724"/>
+				<reportElement x="106" y="10" width="347" height="45" forecolor="#CCCCFF" backcolor="#000000" uuid="6445f234-6080-4d94-afb3-92a4166afe38"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOÑA ROSITA]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="1" y="98" width="555" height="1" uuid="7a4f2e0f-1885-4ae3-847a-788a66771b3c"/>
+			</line>
+			<image hAlign="Center" isUsingCache="false">
+				<reportElement x="3" y="10" width="50" height="45" uuid="a9ab5473-219a-457c-9ecf-b0b4e001c33a"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="66" y="60" width="424" height="35" uuid="7709e442-57d8-4487-b27b-27ee3aca0ff1"/>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PRODUCTOS]]></text>
+				<text><![CDATA[Reporte general productos]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -266,7 +260,7 @@ FROM
 				<textElement textAlignment="Center">
 					<font fontName="Arial Black" size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NO EXISTEN DATOS PARA EL REPORTE INGRESADA]]></text>
+				<text><![CDATA[NO EXISTEN DATOS PARA EL REPORTE INGRESADO]]></text>
 			</staticText>
 		</band>
 	</noData>

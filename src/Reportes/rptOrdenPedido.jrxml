@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptOrdenPedido" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ae570502-fd21-408a-970a-81ea043b34e3">
+	<property name="ireport.zoom" value="0.9090909090909091"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="162"/>
+	<parameter name="numPed" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select c.num_ped numPedido, DATE_FORMAT(c.fec_ped, "%d-%m-%Y") fecha,c.cod_pro_pid codPro,c.ced_usu_pid cedUsu,pro.nom_pro nomPro,pro.dir_pro dirPro, CONCAT(CONCAT(u.nom_usu,' '),u.ape_usu) nomUsu,CONCAT(CONCAT(CONCAT(CONCAT(p.tip_pro,' '),p.mar_pro),' '),col.nom_col) producto,d.cantidad cant
+from pedidos_cab c, proveedores pro, usuarios u,productos p,detalle_pedidos d, colores col
+where c.cod_pro_pid = pro.cod_pro
+and c.num_ped = d.num_ped_p
+and d.id_pro_v = p.id_pro
+and p.id_col_per = col.id_col
+and c.ced_usu_pid = u.cod_usu
+and c.num_ped = $P{numPed}]]>
+	</queryString>
+	<field name="numPedido" class="java.lang.Integer"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="codPro" class="java.lang.String"/>
+	<field name="cedUsu" class="java.lang.String"/>
+	<field name="nomPro" class="java.lang.String"/>
+	<field name="dirPro" class="java.lang.String"/>
+	<field name="nomUsu" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="cant" class="java.lang.Integer"/>
+	<title>
+		<band height="199" splitType="Stretch">
+			<rectangle>
+				<reportElement x="262" y="28" width="279" height="145" uuid="2e7b6dc7-5174-46e7-9b89-6681196e4c44"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="327" y="69" width="158" height="20" uuid="1bcaf3f5-1f15-4815-a76d-0c939b8e4adb"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORDEN DE PEDIDO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="420" y="145" width="100" height="20" uuid="b5a1b4e6-3a70-4c68-a591-fdcd232ae8b0"/>
+				<textElement>
+					<font size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="145" width="70" height="20" uuid="a5cced4e-e6c9-4106-b471-d07d21169441"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="105" width="70" height="20" uuid="be346589-d71a-47e9-b128-803c62f5888f"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NÚMERO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="107" width="209" height="77" uuid="7969aa70-9950-4fb4-ad26-4f61cedd9739"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="10"/>
+				</textElement>
+				<text><![CDATA[Almacén de artículos de vestimenta
+MASCULINO-FEMENINO
+Ambato-Ecuador
+Joaquín Lalama y Avenida Cevallos
+0980785294]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement x="10" y="10" width="209" height="95" uuid="d59e69c1-f01c-400f-8957-3fafc77e2a43"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="420" y="39" width="100" height="20" uuid="748dca80-a0be-467d-8409-28aca79452b3"/>
+				<textElement>
+					<font size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1101711323001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="39" width="70" height="20" uuid="11eb795b-1e50-4fd3-b73c-2dc352e6545c"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="420" y="107" width="100" height="20" uuid="45713f56-79e8-424f-bcff-7e199ef5b7e5"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numPedido}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="177" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="10" y="0" width="531" height="133" uuid="0e15ec0c-2e6c-4a53-a18d-fbe868674a10"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="358" y="23" width="47" height="20" uuid="74a2815d-c272-4220-a81b-6001a810de17"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="103" width="75" height="20" uuid="d97535dd-3043-4e49-aef3-8382cb654094"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BODEGUERO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="23" width="75" height="20" uuid="700c2f00-0f9e-4bfc-9b33-a8dccf251369"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROVEEDOR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="62" width="75" height="20" uuid="1fe8b89f-646c-4684-a87e-5878f39f5677"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CIUDAD:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="119" y="62" width="186" height="20" uuid="b10afe71-0ca0-460a-a322-1add119e56ef"/>
+				<textFieldExpression><![CDATA[$F{dirPro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="23" width="187" height="20" uuid="c855532d-26dc-46fd-b46b-99c0b40ce572"/>
+				<textFieldExpression><![CDATA[$F{nomPro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="103" width="187" height="20" uuid="b49ff193-e9b0-4b5f-85fe-6548bf3666f0"/>
+				<textFieldExpression><![CDATA[$F{nomUsu}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="23" width="100" height="20" uuid="ec51af49-6574-4a4a-a760-2e33b8ae0fa8"/>
+				<textFieldExpression><![CDATA[$F{codPro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="305" y="10" width="59" height="20" uuid="16c110da-ef17-4084-953d-32c67d975846"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="10" width="63" height="20" uuid="c8bcb5d4-1fcc-470e-a909-242fd076586b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="44" splitType="Stretch">
+			<textField>
+				<reportElement x="102" y="12" width="163" height="20" uuid="4dc81c64-0ca1-4dcb-a4f4-c25e7b997d4e"/>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="12" width="32" height="20" uuid="2c014b35-6d27-4176-9c26-f9e593501ef0"/>
+				<textFieldExpression><![CDATA[$F{cant}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<noData>
+		<band height="455">
+			<staticText>
+				<reportElement x="51" y="8" width="456" height="103" uuid="cf606702-b2b8-4b6b-a131-a3c0fb811a2b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO EXISTEN DATOS PARA EL PEDIDO INGRESADO]]></text>
+			</staticText>
+			<image>
+				<reportElement x="1" y="93" width="554" height="351" uuid="b6d8a158-fa7d-4d0d-a08f-ea4a121acc0d"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\no_datos.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="239" y="59" width="100" height="20" uuid="89bf0438-8654-4052-86d1-344f1a7fa4d3"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

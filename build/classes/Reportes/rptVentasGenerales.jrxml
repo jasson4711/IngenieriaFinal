@@ -47,20 +47,31 @@ FROM
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="58" splitType="Stretch">
+		<band height="107" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="8" width="555" height="1" uuid="62c1e562-483f-4ea4-a4e7-2e33ada30592"/>
-			</line>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1" uuid="7c8c5d79-c247-46cf-b013-a51eb7c945b8"/>
+				<reportElement positionType="FixRelativeToBottom" x="-2" y="88" width="555" height="1" uuid="90c68788-9e8c-43fc-ad4e-05658625e9f0"/>
 			</line>
 			<staticText>
-				<reportElement x="65" y="13" width="424" height="35" uuid="d06ac18f-756d-42bd-b34e-1865bbc3449a"/>
+				<reportElement x="103" y="0" width="347" height="45" forecolor="#CCCCFF" backcolor="#000000" uuid="9f08a33c-e07c-4306-900f-f7ae2ba439d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOÑA ROSITA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="63" y="50" width="424" height="35" uuid="d7a7060f-2235-428e-b0de-890d37a86f4b"/>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Classic template]]></text>
+				<text><![CDATA[Reporte ventas generales]]></text>
 			</staticText>
+			<image hAlign="Center" isUsingCache="false">
+				<reportElement x="0" y="0" width="50" height="45" uuid="46a25edc-f1cd-4a90-9da5-be2d13f4d4ec"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="-2" y="45" width="555" height="1" uuid="036cdb08-2f60-4bfd-99a8-c40f0a36c162"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>

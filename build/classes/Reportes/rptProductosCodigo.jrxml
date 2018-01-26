@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="604ed527-da4a-4879-ae13-ebc557e72dad">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="167"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="codigo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
@@ -17,7 +17,10 @@
 FROM
      `productos` productos INNER JOIN `tallas` tallas ON productos.`id_tal_per` = tallas.`ID_TAL`
      INNER JOIN `colores` colores ON productos.`id_col_per` = colores.`id_col`
-where productos.`ID_PRO` like $P{codigo}"%"]]>
+where productos.`ID_PRO` like $P{codigo}"%"
+order by productos.`ID_PRO`
+
+]]>
 	</queryString>
 	<field name="productos_ID_PRO" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -47,19 +50,30 @@ where productos.`ID_PRO` like $P{codigo}"%"]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="58" splitType="Stretch">
+		<band height="126" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="8" width="555" height="1" uuid="b99fc92d-38d2-45ef-9a20-391b80ff5a02"/>
-			</line>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1" uuid="3b4fd44d-4e1d-494b-ac93-68fc269296b4"/>
+				<reportElement x="3" y="55" width="555" height="1" uuid="acd8d6a7-daf4-4173-b572-888648ee195f"/>
 			</line>
 			<staticText>
-				<reportElement x="65" y="13" width="424" height="35" uuid="fb720c58-b469-45e6-9e97-e4a1773fef65"/>
+				<reportElement x="108" y="10" width="347" height="45" forecolor="#CCCCFF" backcolor="#000000" uuid="59c5fbc8-47d3-4cfd-a778-f93709a768de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOÑA ROSITA]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="3" y="98" width="555" height="1" uuid="52ce485c-ea34-4a50-9ad3-a3e68eef4d92"/>
+			</line>
+			<image hAlign="Center" isUsingCache="false">
+				<reportElement x="5" y="10" width="50" height="45" uuid="13c009d0-089d-4e12-b64e-1343ccec3b3d"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="68" y="60" width="424" height="35" uuid="0621110f-7ca6-4a8d-ab08-7b541d7e6f6e"/>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Reporte Productos por código]]></text>
+				<text><![CDATA[Reporte productos por código]]></text>
 			</staticText>
 		</band>
 	</title>

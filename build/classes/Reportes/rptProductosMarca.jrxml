@@ -18,7 +18,8 @@ FROM
      `productos` productos INNER JOIN `tallas` tallas ON productos.`id_tal_per` = tallas.`ID_TAL`
      INNER JOIN `colores` colores ON productos.`id_col_per` = colores.`id_col`
 WHERE
- productos.`MAR_PRO` like $P{marca}"%"]]>
+ productos.`MAR_PRO` like $P{marca}"%"
+order by productos.`MAR_PRO`]]>
 	</queryString>
 	<field name="productos_ID_PRO" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -48,20 +49,31 @@ WHERE
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="58" splitType="Stretch">
+		<band height="119" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="8" width="555" height="1" uuid="3c2f39f3-cf78-4b88-9bd1-7b160cf94395"/>
-			</line>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1" uuid="abba4240-41a8-4b94-9fb0-89678d135276"/>
+				<reportElement positionType="FixRelativeToBottom" x="1" y="93" width="555" height="1" uuid="50d0ff58-6b72-46d5-bab9-f6f15bbd198b"/>
 			</line>
 			<staticText>
-				<reportElement x="65" y="13" width="424" height="35" uuid="acd8e5e6-46b2-4c9a-85eb-69c81155d318"/>
+				<reportElement x="106" y="5" width="347" height="45" forecolor="#CCCCFF" backcolor="#000000" uuid="24189d46-91a8-4f4a-98c3-b7935264c1e8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOÑA ROSITA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="66" y="55" width="424" height="35" uuid="dcbdfd4d-2bb7-4c64-8997-d4bb35cb8adc"/>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Reporte productos por marca]]></text>
 			</staticText>
+			<image hAlign="Center" isUsingCache="false">
+				<reportElement x="3" y="5" width="50" height="45" uuid="b3cf16a8-6ee6-4974-9de5-9b003e7bdf60"/>
+				<imageExpression><![CDATA["C:\\Imagenes\\LogoR.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="1" y="50" width="555" height="1" uuid="933090e9-b63d-4d9a-9819-011e732e846f"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>

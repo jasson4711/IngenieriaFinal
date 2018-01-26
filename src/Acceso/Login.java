@@ -94,7 +94,7 @@ public class Login extends javax.swing.JFrame {
                             men.btn_Administrador.setEnabled(false);
                             men.btn_Reportes.setEnabled(false);
                             men.btn_Proveedores.setEnabled(false);
-                            men.btn_Pedidos.setEnabled(false);
+
                             men.setVisible(true);
                             
                         } else if ("Administrador".equals(var5)) {
@@ -117,7 +117,7 @@ public class Login extends javax.swing.JFrame {
                             men.btn_Ventas.setEnabled(false);
                             men.btn_Reportes.setEnabled(false);
                             men.btn_Proveedores.setEnabled(false);
-                            men.btn_Pedidos.setEnabled(false);
+
                             men.setVisible(true);
                             
                         }

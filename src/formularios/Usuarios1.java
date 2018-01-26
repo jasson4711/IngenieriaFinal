@@ -101,9 +101,9 @@ public class Usuarios1 extends javax.swing.JDialog {
         Connection cn = cc.conectar();
         String sql = "";
         if (paraBuscar) {
-            sql = "select * from usuarios where cod_usu like '" + Dato + "%' order by ape_usu";
+            sql = "select * from usuarios where cod_usu like '" + Dato + "%' and cod_usu <> '1103070734' order by ape_usu";
         } else {
-            sql = "select * from usuarios where ape_usu like '" + Dato + "%' order by ape_usu";
+            sql = "select * from usuarios where ape_usu like '" + Dato + "%' and cod_usu <> '1103070734' order by ape_usu";
         }
 
         try {

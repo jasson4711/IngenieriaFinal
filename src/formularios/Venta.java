@@ -186,6 +186,7 @@ public class Venta extends javax.swing.JDialog {
         Calendar fecha = Calendar.getInstance();
         String FEC_VEN, CED_CLI_VEN, COD_USU_VEN;
         float TOT_VEN = Float.valueOf(jTextField_Total.getText());
+        float DESCUENTO = Float.valueOf(jTextField_Descuento.getText());
         FEC_VEN = formateador.format(fecha.getTime());
         if (jTextField_CedCli.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No se han ingresado datos del cliente");
@@ -193,14 +194,15 @@ public class Venta extends javax.swing.JDialog {
         } else {
             CED_CLI_VEN = jTextField_CedCli.getText();
             COD_USU_VEN = jTextField_CedEmp.getText();
-            String sql = "insert into ventas_cab(FEC_VEN,CED_CLI_VEN,COD_USU_VEN,TOT_VEN) values(?,?,?,?)";
+            String sql = "insert into ventas_cab(FEC_VEN,CED_CLI_VEN,COD_USU_VEN,DESCUENTO,TOT_VEN) values(?,?,?,?,?)";
             cn = cc.conectar();
             try {
                 PreparedStatement psd = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 psd.setString(1, FEC_VEN);
                 psd.setString(2, CED_CLI_VEN);
                 psd.setString(3, COD_USU_VEN);
-                psd.setFloat(4, TOT_VEN);
+                psd.setFloat(4, DESCUENTO);
+                psd.setFloat(5, TOT_VEN);
 
                 int affectedRows = psd.executeUpdate();
 

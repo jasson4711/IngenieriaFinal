@@ -4,15 +4,25 @@
  */
 package formularios;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JRViewer;
+import org.apache.commons.collections.map.HashedMap;
 
 /**
  *
@@ -30,6 +40,7 @@ public class Pedidos extends javax.swing.JDialog {
     TableColumnModel modeloColumna;
     JScrollPane scroll;
     boolean existeProd = false;
+
     public Pedidos() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -42,10 +53,11 @@ public class Pedidos extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         jTextField_Cod_Prov.setText(codPro);
         cargarCliente();
+        establecerUsuario();
         modeloTablaCarrito();
     }
 
-     public void establecerTamañoColumnas() {
+    public void establecerTamañoColumnas() {
         modeloColumna = jTable_CarritoCompra.getColumnModel();
         modeloColumna.getColumn(0).setPreferredWidth(60);
         modeloColumna.getColumn(1).setPreferredWidth(190);
@@ -54,6 +66,7 @@ public class Pedidos extends javax.swing.JDialog {
         jTable_CarritoCompra.setColumnModel(modeloColumna);
 
     }
+
     public void modeloTablaCarrito() {
         String[] titulos = {"CÓDIGO", "NOMBRE", "TALLA", "CANTIDAD"};
         jTable_CarritoCompra.getTableHeader().setReorderingAllowed(false);
@@ -83,7 +96,7 @@ public class Pedidos extends javax.swing.JDialog {
     public void agregarArticulo() {
         String codigo;
         int cantidad = 0;
-        InventarioProveedor sel = new InventarioProveedor(null, true, obtenerProductos(),jTextField_Cod_Prov.getText().trim());
+        InventarioProveedor sel = new InventarioProveedor(null, true, obtenerProductos(), jTextField_Cod_Prov.getText().trim());
         sel.setVisible(true);
         boolean existe = false;
         if (!sel.isShowing()) {
@@ -114,7 +127,7 @@ public class Pedidos extends javax.swing.JDialog {
                         registros[3] = String.valueOf(cantidad);
                     }
                     modeloTabla.addRow(registros);
-                    existeProd=true;
+                    existeProd = true;
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Ocurrió un error al obtener datos de la base:\n" + ex);
                     try {
@@ -132,6 +145,30 @@ public class Pedidos extends javax.swing.JDialog {
             }
         }
     }
+    
+    public void establecerUsuario() {
+        String sql = "select * from usuarios where cod_usu='" + FramePrincipal.cedUsuario + "'";
+//        String sql = "select * from usuarios where cod_usu='1101715876'";
+        cn = cc.conectar();
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                jTextField_Ced_Enc.setText(rs.getString("COD_USU"));
+                jTextField_Nom_Enc.setText(rs.getString("NOM_USU") + " " + rs.getString("APE_USU"));
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al obtener datos de la base:\n" + ex);
+            try {
+                cn.close();
+            } catch (SQLException ex1) {
+                JOptionPane.showMessageDialog(null, "Error de conexión");
+            }
+        } catch (Exception ex) {
+        }
+    }
+
 
     public void cargarCliente() {
         if (jTextField_Cod_Prov.getText().isEmpty()) {
@@ -202,6 +239,126 @@ public class Pedidos extends javax.swing.JDialog {
             }
         } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "No se ha seleccionado una fila");
+        }
+
+    }
+
+    public void realizarPedido() {
+        crearCabecera();
+        cn = cc.conectar();
+        int NUM_PED_P, CANTIDAD;
+        String ID_PRO_V;
+        NUM_PED_P = codCab;
+
+        String sql = "insert into detalle_pedidos (num_ped_p, id_pro_v,cantidad) values (?,?,?)";
+        int n = 0;
+        int i;
+        for (i = 0; i < jTable_CarritoCompra.getRowCount(); i++) {
+            ID_PRO_V = jTable_CarritoCompra.getValueAt(i, 0).toString();
+            CANTIDAD = Integer.valueOf(jTable_CarritoCompra.getValueAt(i, 3).toString());
+            //String sqlUpd = "update productos set sto_pro=sto_pro-" + CANTIDAD + " where id_pro='" + ID_PRO_V + "'";
+            try {
+                PreparedStatement psd = cn.prepareStatement(sql);
+                //PreparedStatement psdUpd = cn.prepareCall(sqlUpd);
+                psd.setInt(1, NUM_PED_P);
+                psd.setString(2, ID_PRO_V);
+                psd.setInt(3, CANTIDAD);
+                n += psd.executeUpdate();
+                //psdUpd.executeUpdate();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error en el envío de datos a la base\n" + ex);
+                try {
+                    cn.close();
+                } catch (SQLException ex1) {
+                    JOptionPane.showMessageDialog(null, "Error de conexión");
+                }
+            }
+        }
+        if (n == i) {
+            //JOptionPane.showMessageDialog(null, "Venta exitosa!");
+            vaciarCarrito();
+            valoresIniciales();
+            existeProd = false;
+            int opcion = JOptionPane.showConfirmDialog(null, "¿Desea imprimir orden de pedido?", "OPERACIÓN EXITOSAs!", JOptionPane.YES_OPTION);
+            if (opcion == 0) {
+                reporte(NUM_PED_P);
+            }
+            //Aqui sacar la factura a imprimir OJOOO
+        }
+        try {
+            cn.close();
+        } catch (SQLException ex1) {
+            JOptionPane.showMessageDialog(null, "Error de conexión");
+        }
+    }
+
+    public void vaciarCarrito() {
+
+        for (int i = 0; i < jTable_CarritoCompra.getRowCount(); i++) {
+            modeloTabla.removeRow(i);
+            i -= 1;
+        }
+
+    }
+
+    public void valoresIniciales() {
+        jTextField_NumElim.setText("");
+        jTextField_NumElim.setEnabled(false);
+        jButtonFacturar.setEnabled(false);
+        jButton_Eliminar.setEnabled(false);}
+
+    public void crearCabecera() {
+        String sql = "insert into pedidos_cab (fec_ped,cod_pro_pid,ced_usu_pid) values (?,?,?)";
+        cn = cc.conectar();
+        ArrayList<Producto> productos = obtenerProductos();
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        try {
+            PreparedStatement psd = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            psd.setString(1, formateador.format(c.getTime()));
+            psd.setString(2, jTextField_Cod_Prov.getText());
+            psd.setString(3, FramePrincipal.cedUsuario);
+
+            int affectedRows = psd.executeUpdate();
+
+            try (ResultSet generatedKeys = psd.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    affectedRows = generatedKeys.getInt(1);
+                    codCab = affectedRows;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se ha podido obtener id");
+                }
+            }
+            cn.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error realizando el pedido \n" + ex);
+        }
+    }
+    
+    public void reporte(int numFac) {
+        cn = cc.conectar();
+        Map parametros = new HashedMap();
+        parametros.put("numPed", numFac);
+        JasperReport reporte;
+        try {
+            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/rptOrdenPedido.jasper"));
+            JasperPrint imprimir = JasperFillManager.fillReport(reporte, parametros, cn);
+            //JasperViewer.viewReport(imprimir, false);
+            JDialog frame = new JDialog(this);
+            frame.getContentPane().add(new JRViewer(imprimir));
+            frame.pack();
+            frame.setResizable(true);
+            frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            //frame.setLocationRelativeTo(null);
+            frame.setSize(1000, 700);
+            //frame.setUndecorated(false);
+            frame.setVisible(true);
+            cn.close();
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Error al generar el reporte\n" + ex);
+        } catch (Exception ex) {
         }
 
     }
@@ -643,7 +800,7 @@ public class Pedidos extends javax.swing.JDialog {
             jButton_Eliminar.setEnabled(false);
             jTextField_NumElim.setEnabled(false);
             jButtonFacturar.setEnabled(false);
-            existeProd=false;
+            existeProd = false;
         }
 
     }//GEN-LAST:event_jButton_EliminarActionPerformed
@@ -661,7 +818,7 @@ public class Pedidos extends javax.swing.JDialog {
     private void jButtonFacturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFacturarActionPerformed
         int preg = JOptionPane.showConfirmDialog(this, "Realizar Pedido?...", "Pedido...", JOptionPane.YES_OPTION);
         if (preg == 0) {
-            //facturar();
+            realizarPedido();
         }
     }//GEN-LAST:event_jButtonFacturarActionPerformed
 
